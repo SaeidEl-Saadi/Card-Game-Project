@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Game {
 
@@ -39,6 +40,7 @@ public class Game {
 
     private ArrayList<Card> adventureDeck = new ArrayList<>();;
     private ArrayList<Card> eventDeck = new ArrayList<>();;
+    private ArrayList<Player> players = new ArrayList<>();
 
     public Game() {
         //initialize decks
@@ -59,6 +61,14 @@ public class Game {
         for (int i = 0; i < 3; i++) {
             createEventCards(EVENT_CARDS[i][0], Integer.parseInt(EVENT_CARDS[i][1]));
         }
+
+        Collections.shuffle(adventureDeck);
+        Collections.shuffle(eventDeck);
+
+        //setup players
+        for (int i = 0; i < 4; i++) {
+            players.add(new Player());
+        }
     }
 
     public ArrayList<Card> getAdventureDeck() {
@@ -70,11 +80,15 @@ public class Game {
     }
 
     public ArrayList<Player> getPlayers() {
-        return new ArrayList<Player>();
+        return players;
     }
 
     public void dealCards() {
-        return;
+        for (int i = 0; i < 4; i++) {
+            for (int k = 0; k < 12; k++) {
+                players.get(i).addCard(adventureDeck.removeLast());
+            }
+        }
     }
 
     private void createFoeCards(String face, int value, int amount) {
