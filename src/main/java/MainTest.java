@@ -83,4 +83,16 @@ public class MainTest {
         assertEquals(2, cards.get("Queen's favor"));
         assertEquals(2, cards.get("Prosperity"));
     }
+
+    @Test
+    @DisplayName("Deal 12 cards to each player")
+    void RESP_2_test_1() {
+        Game game = new Game();
+        game.dealCards();
+
+        assertEquals(100 - (game.getPlayers().size() * 12), game.getAdventureDeck().size());
+        for (int i = 0; i < game.getPlayers().size(); i++) {
+            assertEquals(12, game.getPlayers().get(i).getCards().size());
+        }
+    }
 }

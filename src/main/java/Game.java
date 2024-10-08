@@ -69,6 +69,14 @@ public class Game {
         return eventDeck;
     }
 
+    public ArrayList<Player> getPlayers() {
+        return new ArrayList<Player>();
+    }
+
+    public void dealCards() {
+        return;
+    }
+
     private void createFoeCards(String face, int value, int amount) {
         for (int k = 0; k < amount; k++) {
             adventureDeck.add(new Foe(face, value));
