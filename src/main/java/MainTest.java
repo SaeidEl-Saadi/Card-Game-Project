@@ -82,6 +82,5 @@ public class MainTest {
         assertEquals(1, cards.get("Plague"));
         assertEquals(2, cards.get("Queen's favor"));
         assertEquals(2, cards.get("Prosperity"));
-
     }
 }
