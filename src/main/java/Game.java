@@ -83,12 +83,28 @@ public class Game {
         return players;
     }
 
+    public Player getCurrentPlayer() {
+        return new Player();
+    }
+
     public void dealCards() {
         for (int i = 0; i < 4; i++) {
             for (int k = 0; k < 12; k++) {
                 players.get(i).addCard(adventureDeck.removeLast());
             }
         }
+    }
+
+    public Card drawEventCard() {
+        return new Event("");
+    }
+
+    public void nextTurn() {
+        return;
+    }
+
+    public ArrayList<Player> checkWinner() {
+        return new ArrayList<>();
     }
 
     private void createFoeCards(String face, int value, int amount) {

@@ -12,7 +12,15 @@ public class Player {
         return cards;
     }
 
+    public String getName() {
+        return "";
+    }
+
     public void addCard(Card e) {
         cards.add(e);
+    }
+
+    public void giveShields(int amount) {
+        return;
     }
 }

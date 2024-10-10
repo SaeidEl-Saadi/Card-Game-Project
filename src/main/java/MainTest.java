@@ -1,5 +1,8 @@
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
 import java.util.Map;
 import java.util.HashMap;
 
@@ -94,5 +97,39 @@ public class MainTest {
         for (int i = 0; i < game.getPlayers().size(); i++) {
             assertEquals(12, game.getPlayers().get(i).getCards().size());
         }
+    }
+
+    @Test
+    @DisplayName("All players take a turn")
+    void RESP_3_test_1() {
+        Game game = new Game();
+        game.dealCards();
+        int eventDeckSize = game.getEventDeck().size();
+
+        for (int i = 0; i <= 3; i++) {
+            assertEquals(game.getPlayers().get(i).getName(), game.getCurrentPlayer().getName());
+            Card c = game.drawEventCard();
+            assertEquals(eventDeckSize - (i + 1), game.getEventDeck().size());
+            assertTrue(c instanceof Event || c instanceof Quest);
+            game.nextTurn();
+        }
+
+        //should be back to first player
+        assertEquals(game.getPlayers().get(0).getName(), game.getCurrentPlayer().getName());
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, 1, 2, 3, 4})
+    @DisplayName("Determine winner(s)")
+    void RESP_3_test_2(int winnerAmount) {
+        Game game = new Game();
+        game.dealCards();
+
+        //give winning amount of shields to {winnerAmount} players
+        for (int i = 0; i < winnerAmount; i++) {
+            game.getPlayers().get(i).giveShields(7);
+        }
+
+        assertEquals(winnerAmount, game.checkWinner().size());
     }
 }
