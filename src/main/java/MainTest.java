@@ -3,6 +3,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintWriter;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -131,5 +133,29 @@ public class MainTest {
         }
 
         assertEquals(winnerAmount, game.checkWinner().size());
+    }
+
+    @Test
+    @DisplayName("Display winners")
+    void RESP_4_test_1() {
+        Game game = new Game();
+        game.dealCards();
+        game.getPlayers().get(0).giveShields(7);
+        game.getPlayers().get(2).giveShields(7);
+
+        UI ui = new UI();
+
+        ByteArrayOutputStream outputstream = new ByteArrayOutputStream();
+        PrintWriter pw = new PrintWriter(outputstream);
+        ui.displayWinners(pw, game);
+        pw.flush();
+        String output = outputstream.toString().trim();
+
+        String expectedOutput = "Game over. Winner(s):\n";
+        for (Player p : game.checkWinner()) {
+            expectedOutput += p.getName() + " with " + p.getShields() + " shields\n";
+        }
+
+        assertEquals(expectedOutput.trim(), output);
     }
 }
