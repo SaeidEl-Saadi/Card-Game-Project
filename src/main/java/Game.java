@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -41,6 +42,7 @@ public class Game {
     private ArrayList<Card> adventureDeck = new ArrayList<>();;
     private ArrayList<Card> eventDeck = new ArrayList<>();;
     private ArrayList<Player> players = new ArrayList<>();
+    private Player currentPlayer;
 
     public Game() {
         //initialize decks
@@ -67,8 +69,10 @@ public class Game {
 
         //setup players
         for (int i = 0; i < 4; i++) {
-            players.add(new Player());
+            players.add(new Player("P" + (i+1)));
         }
+
+        currentPlayer = players.get(0);
     }
 
     public ArrayList<Card> getAdventureDeck() {
@@ -84,7 +88,7 @@ public class Game {
     }
 
     public Player getCurrentPlayer() {
-        return new Player();
+        return currentPlayer;
     }
 
     public void dealCards() {
@@ -96,15 +100,28 @@ public class Game {
     }
 
     public Card drawEventCard() {
-        return new Event("");
+        return eventDeck.removeLast();
     }
 
     public void nextTurn() {
-        return;
+        if (currentPlayer.getName().equals("P4")) {
+            currentPlayer = players.get(0);
+            return;
+        }
+
+        currentPlayer = players.get(Character.getNumericValue(currentPlayer.getName().charAt(1)));
     }
 
     public ArrayList<Player> checkWinner() {
-        return new ArrayList<>();
+        ArrayList<Player> winners = new ArrayList<>();
+
+        for (Player p : players) {
+            if (p.getShields() >= 7) {
+                winners.add(p);
+            }
+        }
+
+        return winners;
     }
 
     private void createFoeCards(String face, int value, int amount) {

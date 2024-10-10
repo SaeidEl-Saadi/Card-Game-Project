@@ -2,10 +2,12 @@ import java.util.ArrayList;
 
 public class Player {
 
-    ArrayList<Card> cards = new ArrayList<>();
+    private ArrayList<Card> cards = new ArrayList<>();
+    private String name;
+    private int shields = 0;
 
-    public Player() {
-
+    public Player(String name) {
+        this.name = name;
     }
 
     public ArrayList<Card> getCards() {
@@ -13,7 +15,11 @@ public class Player {
     }
 
     public String getName() {
-        return "";
+        return this.name;
+    }
+
+    public int getShields() {
+        return this.shields;
     }
 
     public void addCard(Card e) {
@@ -21,6 +27,6 @@ public class Player {
     }
 
     public void giveShields(int amount) {
-        return;
+        shields += amount;
     }
 }
