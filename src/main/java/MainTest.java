@@ -4,6 +4,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.Map;
 import java.util.HashMap;
@@ -158,4 +159,56 @@ public class MainTest {
 
         assertEquals(expectedOutput.trim(), output);
     }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"Plague", "Queen's favor", "Prosperity"})
+    @DisplayName("Display drawn event card")
+    void RESP_5_test_1(String eventName) {
+        Game game = new Game();
+        UI ui = new UI();
+        game.getEventDeck().addLast(new Event(eventName));
+
+        PrintStream previous = System.out;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+
+        Card drawnCard = game.drawEventCard();
+        ui.displayDrawnCard(drawnCard);
+
+        String output = outputStream.toString().trim();
+        String expected = "Drawn Card: " + drawnCard.getCard() + "\n";
+        assertEquals(expected.trim(), output);
+
+        System.setOut(previous);
+    }
+
+    @Test
+    @DisplayName("Perform event actions")
+    void RESP_5_test_2() {
+        Game game = new Game();
+
+        //test Plague
+        game.getEventDeck().addLast(new Event("Plague"));
+        game.getPlayers().get(0).giveShields(3);
+        game.performEventAction(game.drawEventCard());
+        assertEquals(1, game.getCurrentPlayer().getShields());
+
+        game.getEventDeck().addLast(new Event("Plague"));
+        game.performEventAction(game.drawEventCard());
+        assertEquals(0, game.getCurrentPlayer().getShields());
+
+        //test Queen’s favor
+        game.getEventDeck().addLast(new Event("Queen’s favor"));
+        game.performEventAction(game.drawEventCard());
+        assertEquals(2, game.getCurrentPlayer().getCards().size());
+        game.getCurrentPlayer().getCards().clear();
+
+        //test Prosperity
+        game.getEventDeck().addLast(new Event("Prosperity"));
+        game.performEventAction(game.drawEventCard());
+        for (int i = 0; i < 4; i++) {
+            assertEquals(2, game.getPlayers().get(i).getCards().size());
+        }
+    }
+
 }
