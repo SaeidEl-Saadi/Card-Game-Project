@@ -124,6 +124,25 @@ public class Game {
         return winners;
     }
 
+    public void performEventAction(Card c) {
+
+        if (c.getCard().equals("Plague")) {
+            currentPlayer.removeShields();
+        } else if (c.getCard().equals("Queen’s favor")) {
+            drawAdventureCards(currentPlayer, 2);
+        } else if (c.getCard().equals("Prosperity")) {
+            for (int i = 0; i < 4; i++) {
+                drawAdventureCards(players.get(i), 2);
+            }
+        }
+    }
+
+    public void drawAdventureCards(Player p, int amount) {
+        for (int i = 0; i < amount; i++) {
+            p.addCard(adventureDeck.removeLast());
+        }
+    }
+
     private void createFoeCards(String face, int value, int amount) {
         for (int k = 0; k < amount; k++) {
             adventureDeck.add(new Foe(face, value));

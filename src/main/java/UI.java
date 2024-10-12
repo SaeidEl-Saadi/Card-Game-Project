@@ -9,4 +9,8 @@ public class UI {
             writer.print(p.getName() + " with " + p.getShields() + " shields\n");
         }
     }
+
+    public void displayDrawnCard(Card c) {
+        System.out.print("Drawn Card: " + c.getCard() + "\n");
+    }
 }

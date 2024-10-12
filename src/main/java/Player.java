@@ -29,4 +29,13 @@ public class Player {
     public void giveShields(int amount) {
         shields += amount;
     }
+
+    public void removeShields() {
+        if (shields < 2) {
+            shields = 0;
+            return;
+        }
+
+        shields -= 2;
+    }
 }
