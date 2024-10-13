@@ -1,4 +1,5 @@
 import java.io.PrintWriter;
+import java.util.Scanner;
 
 public class UI {
     public UI() {}
@@ -12,5 +13,27 @@ public class UI {
 
     public void displayDrawnCard(Card c) {
         System.out.print("Drawn Card: " + c.getCard() + "\n");
+    }
+
+    public void displayHand(Player p) {
+        if (p.getCards().size() == 0) {
+            System.out.print(p.getName() + "'s hand is empty\n");
+            return;
+        }
+
+        System.out.print(p.getName() + "'s hand:\n");
+        for (int i = 0; i < p.getCards().size(); i++) {
+            System.out.print((i + 1) + ". " + p.getCards().get(i) + "\n");
+        }
+    }
+
+    public void hotSeatPrompt(Game g) {
+        for (int i = 0; i < 20; i++) {
+            System.out.print("\n");
+        }
+        System.out.print(g.getCurrentPlayer().getName() + "'s turn has ended. Press enter for next turn...");
+        Scanner scanner = new Scanner(System.in);
+        scanner.nextLine();
+        System.out.print("\n");
     }
 }

@@ -24,6 +24,7 @@ public class Player {
 
     public void addCard(Card e) {
         cards.add(e);
+        cards.sort(new CardComparator());
     }
 
     public void giveShields(int amount) {

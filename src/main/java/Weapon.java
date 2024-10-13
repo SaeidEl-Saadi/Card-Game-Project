@@ -8,8 +8,17 @@ public class Weapon implements Card {
         this.value = value;
     }
 
+    public int getValue() {
+        return value;
+    }
+
     @Override
     public String getCard() {
+        return face;
+    }
+
+    @Override
+    public String toString() {
         return face;
     }
 }
