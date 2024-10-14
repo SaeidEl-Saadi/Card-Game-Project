@@ -36,4 +36,13 @@ public class UI {
         scanner.nextLine();
         System.out.print("\n");
     }
+
+    public String trimPrompt(Player p, Scanner s) {
+        System.out.print(p.getName() + " needs to trim their hand (press enter to show hand):\n");
+        s.nextLine();
+
+        displayHand(p);
+
+        return s.nextLine();
+    }
 }

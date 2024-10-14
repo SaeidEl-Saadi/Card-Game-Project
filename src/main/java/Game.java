@@ -1,6 +1,7 @@
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Scanner;
 
 public class Game {
 
@@ -140,6 +141,23 @@ public class Game {
     public void drawAdventureCards(Player p, int amount) {
         for (int i = 0; i < amount; i++) {
             p.addCard(adventureDeck.removeLast());
+        }
+    }
+
+    public void trimHand() {
+        UI ui = new UI();
+        Scanner scanner = new Scanner(System.in);
+        String index = "";
+
+        for (int i = 0; i < 4; i++) {
+            if (players.get(i).getCards().size() <= 12) {
+                continue;
+            }
+
+            while (players.get(i).getCards().size() > 12) {
+                index = ui.trimPrompt(players.get(i), scanner);
+                players.get(i).removeCard(Integer.parseInt(index));
+            }
         }
     }
 

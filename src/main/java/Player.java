@@ -39,4 +39,8 @@ public class Player {
 
         shields -= 2;
     }
+
+    public void removeCard(int index) {
+        cards.remove(index - 1);
+    }
 }
