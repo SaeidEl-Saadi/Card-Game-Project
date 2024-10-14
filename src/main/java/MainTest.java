@@ -3,10 +3,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -293,6 +290,60 @@ public class MainTest {
 
         System.setOut(previous);
         assertEquals(expected, output);
+    }
+
+    @Test
+    @DisplayName("Player trims their hand")
+    void RESP_7_test_1() {
+        Game game = new Game();
+        game.dealCards();
+
+        game.drawAdventureCards(game.getPlayers().get(0), 2);
+        game.drawAdventureCards(game.getPlayers().get(1), 1);
+
+        String input = "\n3\n\n4\n\n1\n";
+        InputStream previousIn = System.in;
+        ByteArrayInputStream userInput = new ByteArrayInputStream(input.getBytes());
+        System.setIn(userInput);
+
+        game.trimHand();
+
+        for (int i = 0; i < 4; i++) {
+            assertEquals(12, game.getPlayers().get(i).getCards().size());
+        }
+
+        System.setIn(previousIn);
+    }
+
+    @Test
+    @DisplayName("Trim outputs")
+    void RESP_7_test_2() {
+        Game game = new Game();
+        UI ui = new UI();
+        game.dealCards();
+
+        PrintStream previous = System.out;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+
+        InputStream previousIn = System.in;
+        String input = "\n2\n";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
+        System.setIn(inputStream);
+
+        game.drawAdventureCards(game.getPlayers().get(0), 1);
+        String expected = game.getPlayers().get(0).getName() + " needs to trim their hand (press enter to show hand):\n" +
+                game.getPlayers().get(0).getName() + "'s hand:\n";
+        for (int i = 0; i < 13; i++) {
+            expected += (i+1) + ". " + game.getPlayers().get(0).getCards().get(i) + "\n";
+        }
+
+        game.trimHand();
+        String output = outputStream.toString();
+
+        assertEquals(expected, output);
+        System.setOut(previous);
+        System.setIn(previousIn);
     }
 
 }
