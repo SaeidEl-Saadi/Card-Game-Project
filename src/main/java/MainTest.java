@@ -7,8 +7,7 @@ import java.io.*;
 import java.util.Map;
 import java.util.HashMap;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MainTest {
 
@@ -390,6 +389,123 @@ public class MainTest {
 
         assertEquals(game.getPlayers().get(0), game.getSponsor());
         System.setIn(previousIn);
+    }
+
+    @Test
+    @DisplayName("Quest setup UI outputs")
+    void RESP_9_test_1() {
+        Game game = new Game();
+        UI ui = new UI();
+        game.drawAdventureCards(game.getCurrentPlayer(), 1);
+        game.setQuest(new Quest("Q3", 3));
+
+        PrintStream previous = System.out;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+
+        InputStream previousIn = System.in;
+        String input = "1\n";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
+        System.setIn(inputStream);
+
+        game.setSponsor(game.getCurrentPlayer());
+        String answer = ui.promptStage(game, 1);
+
+        String output = outputStream.toString();
+
+        String expected = "Choose Card to add to stage 1 of 3:\n" +
+                "P1's hand:\n" +
+                "1. " + game.getCurrentPlayer().getCards().get(0) +
+                "\nCurrent cards in stage:\n";
+
+        assertEquals(expected, output);
+        assertEquals("1", answer);
+        System.setOut(previous);
+        System.setIn(previousIn);
+    }
+
+    @Test
+    @DisplayName("Valid quest setup")
+    void RESP_9_test_2() {
+        Game game = new Game();
+        UI ui = new UI();
+        Card c1 = new Foe("F20", 20);
+        Card c2 = new Foe("F70", 70);
+        game.getCurrentPlayer().addCard(c1);
+        game.getCurrentPlayer().addCard(c2);
+        game.setSponsor(game.getCurrentPlayer());
+        game.setQuest(new Quest("Q2", 2));
+
+        InputStream previousIn = System.in;
+        String input = "1\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        game.setUpQuest(1);
+
+        input = "quit\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        game.setUpQuest(1);
+
+        input = "1\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        game.setUpQuest(2);
+
+        input = "quit\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        game.setUpQuest(2);
+
+        assertEquals(c1, game.getCurrentQuest().getStage(1).get(0));
+        assertEquals(c2, game.getCurrentQuest().getStage(2).get(0));
+        System.setIn(previousIn);
+    }
+
+    @Test
+    @DisplayName("Check quest setup conditions")
+    void RESP_9_test_3() {
+        Game game = new Game();
+        UI ui = new UI();
+
+        game.setSponsor(game.getCurrentPlayer());
+        game.setQuest(new Quest("Q2", 2));
+
+        //more than 1 foe per stage
+        game.getCurrentQuest().getStage(1).add(new Foe("F10", 10));
+        game.getCurrentQuest().getStage(1).add(new Foe("F15", 15));
+        assertFalse(game.checkValidity(1));
+
+        game.getCurrentQuest().getStage(1).clear();
+
+        //duplicate weapon cards
+        game.getCurrentQuest().getStage(1).add(new Foe("F15", 15));
+        game.getCurrentQuest().getStage(1).add(new Weapon("D5", 5));
+        game.getCurrentQuest().getStage(1).add(new Weapon("D5", 5));
+        assertFalse(game.checkValidity(1));
+
+        //empty stage
+        game.getCurrentQuest().getStage(1).clear();
+        assertFalse(game.checkValidity(1));
+
+        //stage is less value than previous stage
+        game.getCurrentQuest().getStage(1).add(new Foe("F15", 15));
+        game.getCurrentQuest().getStage(2).add(new Foe("F10", 10));
+        assertFalse(game.checkValidity(2));
+
+        game.getCurrentQuest().getStage(1).clear();
+        game.getCurrentQuest().getStage(2).clear();
+
+        //stage has no foe
+        game.getCurrentQuest().getStage(1).add(new Weapon("D5", 5));
+        assertFalse(game.checkValidity(1));
+
+        game.getCurrentQuest().getStage(1).clear();
+
+        //valid stages
+        game.getCurrentQuest().getStage(1).add(new Foe("F10", 10));
+        game.getCurrentQuest().getStage(1).add(new Weapon("D5", 5));
+        game.getCurrentQuest().getStage(2).add(new Foe("F15", 10));
+        game.getCurrentQuest().getStage(2).add(new Weapon("E30", 30));
+
+        assertTrue(game.checkValidity(1));
+        assertTrue(game.checkValidity(2));
     }
 
 }
