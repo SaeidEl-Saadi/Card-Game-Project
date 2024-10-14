@@ -45,6 +45,16 @@ public class Game {
     private ArrayList<Player> players = new ArrayList<>();
     private Player currentPlayer;
 
+    public static class QuestLine {
+        private static Player sponsor;
+
+        public static void setSponsor(Player p) {
+            sponsor = p;
+        }
+
+        public static Player getSponsor() {return sponsor;}
+    }
+
     public Game() {
         //initialize decks
         //adventure deck
@@ -90,6 +100,14 @@ public class Game {
 
     public Player getCurrentPlayer() {
         return currentPlayer;
+    }
+
+    public Player getSponsor() {
+        return QuestLine.getSponsor();
+    }
+
+    public void setSponsor(Player p) {
+        QuestLine.setSponsor(p);
     }
 
     public void dealCards() {
@@ -159,6 +177,39 @@ public class Game {
                 players.get(i).removeCard(Integer.parseInt(index));
             }
         }
+    }
+
+    public Player findSponsor() {
+        ArrayList<Player> declined = new ArrayList<>();
+        UI ui = new UI();
+
+        String answer = "";
+        for (int i = players.indexOf(getCurrentPlayer()); i < players.size(); i++) {
+            answer = ui.sponsorPrompt(players.get(i));
+
+            if (Integer.parseInt(answer) == 2 || answer.toUpperCase().equals("NO")) {
+                declined.add(players.get(i));
+                continue;
+            }
+
+            return players.get(i);
+        }
+
+        for (int i = 0; i < players.size(); i++) {
+            if (declined.contains(players.get(i))) {
+                continue;
+            }
+
+            answer = ui.sponsorPrompt(players.get(i));
+            if (Integer.parseInt(answer) == 2 || answer.toUpperCase().equals("NO")) {
+                declined.add(players.get(i));
+                continue;
+            }
+
+            return players.get(i);
+        }
+
+        return null;
     }
 
     private void createFoeCards(String face, int value, int amount) {
