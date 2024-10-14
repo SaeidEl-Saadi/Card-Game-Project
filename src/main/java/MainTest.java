@@ -346,4 +346,50 @@ public class MainTest {
         System.setIn(previousIn);
     }
 
+    @Test
+    @DisplayName("Find sponsor (UI outputs)")
+    void RESP_8_test_1() {
+        Game game = new Game();
+        UI ui = new UI();
+
+        PrintStream previous = System.out;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+
+        InputStream previousIn = System.in;
+        String input = "1\n";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
+        System.setIn(inputStream);
+
+        String response = ui.sponsorPrompt(game.getPlayers().get(0));
+
+        String output = outputStream.toString();
+
+        String expected = game.getPlayers().get(0).getName() + " do you want to sponsor this quest?\n" +
+                "1. Yes\n" +
+                "2. No\n";
+
+
+        assertEquals("1", response);
+        assertEquals(expected, output);
+        System.setOut(previous);
+        System.setIn(previousIn);
+    }
+
+    @Test
+    @DisplayName("Find sponsor")
+    void RESP_8_test_2() {
+        Game game = new Game();
+
+        InputStream previousIn = System.in;
+        String input = "1\n";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
+        System.setIn(inputStream);
+
+        game.setSponsor(game.findSponsor());
+
+        assertEquals(game.getPlayers().get(0), game.getSponsor());
+        System.setIn(previousIn);
+    }
+
 }
