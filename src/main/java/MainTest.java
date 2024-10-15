@@ -386,10 +386,14 @@ public class MainTest {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
         System.setIn(inputStream);
 
+        game.setQuest(new Quest("Q2", 2));
+        game.getCurrentPlayer().getCards().add(new Foe("F15", 15));
+        game.getCurrentPlayer().getCards().add(new Foe("F15", 20));
         game.setSponsor(game.findSponsor());
 
         assertEquals(game.getPlayers().get(0), game.getSponsor());
         System.setIn(previousIn);
+        Game.QuestLine.resetQuest();
     }
 
     @Test
@@ -423,6 +427,7 @@ public class MainTest {
         assertEquals("1", answer);
         System.setOut(previous);
         System.setIn(previousIn);
+        Game.QuestLine.resetQuest();
     }
 
     @Test
@@ -457,6 +462,7 @@ public class MainTest {
         assertEquals(c1, game.getCurrentQuest().getStage(1).get(0));
         assertEquals(c2, game.getCurrentQuest().getStage(2).get(0));
         System.setIn(previousIn);
+        Game.QuestLine.resetQuest();
     }
 
     @Test
@@ -507,6 +513,7 @@ public class MainTest {
 
         assertTrue(game.checkValidity(1));
         assertTrue(game.checkValidity(2));
+        Game.QuestLine.resetQuest();
     }
 
     @Test
@@ -537,6 +544,7 @@ public class MainTest {
         assertEquals(Game.QuestLine.getParticipents().get(0), game.getPlayers().get(0));
         assertEquals(Game.QuestLine.getParticipents().get(1), game.getPlayers().get(2));
         System.setIn(previousIn);
+        Game.QuestLine.resetQuest();
     }
 
     @Test
@@ -570,6 +578,7 @@ public class MainTest {
         assertEquals(30, Game.QuestLine.getSpecificAttack(0).get(1).getValue());
         assertEquals(30, Game.QuestLine.getSpecificAttack(1).get(0).getValue());
         System.setIn(previousIn);
+        Game.QuestLine.resetQuest();
     }
 
 }

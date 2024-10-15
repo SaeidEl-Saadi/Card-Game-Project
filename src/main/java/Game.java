@@ -67,6 +67,8 @@ public class Game {
             sponsor = null;
             currentQuest = null;
             currentStage = 1;
+            attacks.clear();
+            participents.clear();
         }
 
         public static void addParticipant(Player p) {
@@ -230,7 +232,7 @@ public class Game {
 
         String answer = "";
         for (int i = players.indexOf(getCurrentPlayer()); i < players.size(); i++) {
-            if (players.get(i).foeNum() >= QuestLine.currentQuest.getStageNum()) {
+            if (players.get(i).foeNum() < QuestLine.currentQuest.getStageNum()) {
                 continue;
             }
 
