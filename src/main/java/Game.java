@@ -48,6 +48,9 @@ public class Game {
     public static class QuestLine {
         private static Player sponsor;
         private static Quest currentQuest;
+        private static int currentStage = 1;
+        private static ArrayList<Player> participents = new ArrayList<>();
+        private static ArrayList<ArrayList<Weapon>> attacks = new ArrayList<>();
 
         public static void setSponsor(Player p) {
             sponsor = p;
@@ -59,10 +62,31 @@ public class Game {
 
         public static Player getSponsor() {return sponsor;}
         public static Quest getCurrentQuest() {return currentQuest;}
+        public static ArrayList<Player> getParticipents() {return participents;}
+        public static ArrayList<ArrayList<Weapon>> getAttacks() {return attacks;}
 
         public static void resetQuest() {
             sponsor = null;
             currentQuest = null;
+            currentStage = 1;
+        }
+
+        public static void addParticipant(Player p) {
+            participents.add(p);
+            attacks.add(new ArrayList<>());
+        }
+
+        public static void removeParticipant(Player p) {
+            int index = participents.indexOf(p);
+            if (index < 0) {
+                return;
+            }
+            participents.remove(index);
+            attacks.remove(index);
+        }
+
+        public static void clearAttacks() {
+            attacks.clear();
         }
     }
 
@@ -274,6 +298,29 @@ public class Game {
         }
 
         return true;
+    }
+
+    public void chooseParticipants() {
+        Scanner scanner = new Scanner(System.in);
+        UI ui = new UI();
+        String answer = "";
+
+        for (int i = 0; i < 4; i++) {
+            if (players.get(i) == QuestLine.getSponsor() || players.get(i).weaponNum() < QuestLine.getCurrentQuest().getStageNum()) {
+                continue;
+            }
+
+            ui.promptParticipant(players.get(i));
+            answer = scanner.nextLine();
+
+            if (answer.equals("1") || answer.toUpperCase().equals("YES")) {
+                drawAdventureCards(players.get(i), 1);
+                QuestLine.addParticipant(players.get(i));
+                continue;
+            }
+
+            QuestLine.removeParticipant(players.get(i));
+        }
     }
 
     private void createFoeCards(String face, int value, int amount) {

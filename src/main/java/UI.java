@@ -86,4 +86,9 @@ public class UI {
     public void containsDuplicates() {
         System.out.print("No repeated weapons per stage\n");
     }
+
+    public void promptParticipant(Player p) {
+        System.out.print(p.getName() + " would you like to participate in the Quest with " + Game.QuestLine.getCurrentQuest().getStageNum() + " stages:\n");
+        System.out.print("1. Yes\n2. No\n");
+    }
 }
