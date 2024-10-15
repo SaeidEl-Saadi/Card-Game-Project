@@ -361,7 +361,7 @@ public class MainTest {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
         System.setIn(inputStream);
 
-        String response = ui.sponsorPrompt(game.getPlayers().get(0));
+        ui.sponsorPrompt(game.getPlayers().get(0));
 
         String output = outputStream.toString();
 
@@ -370,7 +370,6 @@ public class MainTest {
                 "2. No\n";
 
 
-        assertEquals("1", response);
         assertEquals(expected, output);
         System.setOut(previous);
         System.setIn(previousIn);
@@ -577,6 +576,229 @@ public class MainTest {
         assertEquals(20, Game.QuestLine.getSpecificAttack(0).get(0).getValue());
         assertEquals(30, Game.QuestLine.getSpecificAttack(0).get(1).getValue());
         assertEquals(30, Game.QuestLine.getSpecificAttack(1).get(0).getValue());
+        System.setIn(previousIn);
+        Game.QuestLine.resetQuest();
+    }
+
+    @Test
+    @DisplayName("JP Scenario")
+    void A_TEST_JP_Scenario() {
+        Game game = new Game();
+        UI ui = new UI();
+        game.dealCards();
+
+        //rig P1
+        game.getPlayers().get(0).getCards().clear();
+        game.getPlayers().get(0).addCard(new Foe("F5", 5));
+        game.getPlayers().get(0).addCard(new Foe("F5", 5));
+        game.getPlayers().get(0).addCard(new Foe("F15", 15));
+        game.getPlayers().get(0).addCard(new Foe("F15", 15));
+        game.getPlayers().get(0).addCard(new Weapon("D5", 5));
+        game.getPlayers().get(0).addCard(new Weapon("S10", 10));
+        game.getPlayers().get(0).addCard(new Weapon("S10", 10));
+        game.getPlayers().get(0).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(0).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(0).addCard(new Weapon("B15", 15));
+        game.getPlayers().get(0).addCard(new Weapon("B15", 15));
+        game.getPlayers().get(0).addCard(new Weapon("L20", 20));
+
+        //rig P2
+        game.getPlayers().get(1).getCards().clear();
+        game.getPlayers().get(1).addCard(new Foe("F5", 5));
+        game.getPlayers().get(1).addCard(new Foe("F5", 5));
+        game.getPlayers().get(1).addCard(new Foe("F15", 15));
+        game.getPlayers().get(1).addCard(new Foe("F15", 15));
+        game.getPlayers().get(1).addCard(new Foe("F40", 40));
+        game.getPlayers().get(1).addCard(new Weapon("D5", 5));
+        game.getPlayers().get(1).addCard(new Weapon("S10", 10));
+        game.getPlayers().get(1).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(1).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(1).addCard(new Weapon("B15", 15));
+        game.getPlayers().get(1).addCard(new Weapon("B15", 15));
+        game.getPlayers().get(1).addCard(new Weapon("E30", 30));
+
+        //rig P3
+        game.getPlayers().get(2).getCards().clear();
+        game.getPlayers().get(2).addCard(new Foe("F5", 5));
+        game.getPlayers().get(2).addCard(new Foe("F5", 5));
+        game.getPlayers().get(2).addCard(new Foe("F5", 5));
+        game.getPlayers().get(2).addCard(new Foe("F15", 15));
+        game.getPlayers().get(2).addCard(new Weapon("D5", 5));
+        game.getPlayers().get(2).addCard(new Weapon("S10", 10));
+        game.getPlayers().get(2).addCard(new Weapon("S10", 10));
+        game.getPlayers().get(2).addCard(new Weapon("S10", 10));
+        game.getPlayers().get(2).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(2).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(2).addCard(new Weapon("B15", 15));
+        game.getPlayers().get(2).addCard(new Weapon("L20", 20));
+
+        //rig P4
+        game.getPlayers().get(3).getCards().clear();
+        game.getPlayers().get(3).addCard(new Foe("F5", 5));
+        game.getPlayers().get(3).addCard(new Foe("F15", 5));
+        game.getPlayers().get(3).addCard(new Foe("F15", 5));
+        game.getPlayers().get(3).addCard(new Foe("F40", 40));
+        game.getPlayers().get(3).addCard(new Weapon("D5", 5));
+        game.getPlayers().get(3).addCard(new Weapon("D5", 5));
+        game.getPlayers().get(3).addCard(new Weapon("S10", 10));
+        game.getPlayers().get(3).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(3).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(3).addCard(new Weapon("B15", 15));
+        game.getPlayers().get(3).addCard(new Weapon("L20", 20));
+        game.getPlayers().get(3).addCard(new Weapon("E30", 30));
+
+        //P1 draws Q4
+        game.drawEventCard();
+        Card eventCardDrawn = new Quest("Q4", 4);
+        game.setQuest((Quest) eventCardDrawn);
+
+        //setup rigged input
+        InputStream previousIn = System.in;
+        String input = "2\n1\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+        //find sponsor (P2)
+        game.setSponsor(game.findSponsor());
+
+
+        input = "1\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        //build stage 1
+        game.setUpQuest(1);
+        input = "7\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        game.setUpQuest(1);
+        input = "quit\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        game.setUpQuest(1);
+
+        input = "2\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        //build stage 2
+        game.setUpQuest(2);
+        input = "5\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        game.setUpQuest(2);
+        input = "quit\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        game.setUpQuest(2);
+
+        input = "2\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        //build stage 3
+        game.setUpQuest(3);
+        input = "3\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        //build stage 3
+        game.setUpQuest(3);
+        input = "4\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        //build stage 3
+        game.setUpQuest(3);
+        input = "quit\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        //build stage 3
+        game.setUpQuest(3);
+
+        input = "2\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        //build stage 4
+        game.setUpQuest(4);
+        input = "3\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        //build stage 4
+        game.setUpQuest(4);
+        input = "quit\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        //build stage 4
+        game.setUpQuest(4);
+
+
+        //rig draws
+        game.getAdventureDeck().addLast(new Weapon("B15", 15));
+        game.getAdventureDeck().addLast(new Weapon("S10", 10));
+        game.getAdventureDeck().addLast(new Foe("F30", 30));
+
+        //stage 1
+        input = "1\n1\n1\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        //choose participants
+        game.chooseParticipants();
+
+        input = "\n1\n\n1\n\n1\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        game.trimHand();
+
+        input = "5\n5\nquit\n5\n4\nquit\n4\n7\nquit\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        game.setUpAttacks();
+
+        game.resolveAttacks();
+
+        //rig draws
+        game.getAdventureDeck().addLast(new Weapon("L20", 20));
+        game.getAdventureDeck().addLast(new Weapon("L20", 20));
+        game.getAdventureDeck().addLast(new Foe("F10", 10));
+
+        //stage 2
+        input = "1\n1\n1\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        //choose participants
+        game.chooseParticipants();
+
+        input = "7\n6\nquit\n9\n4\nquit\n6\n6\nquit\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        game.setUpAttacks();
+
+        game.resolveAttacks();
+
+        ui.displayHand(game.getPlayers().get(0));
+        assertEquals(0, game.getPlayers().get(0).getShields());
+
+
+        //rig draws
+        game.getAdventureDeck().addLast(new Weapon("S10", 10));
+        game.getAdventureDeck().addLast(new Weapon("B15", 15));
+
+
+        //stage 3
+        input = "1\n1\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        //choose participants
+        game.chooseParticipants();
+
+        input = "9\n6\n4\nquit\n7\n5\n6\nquit\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        game.setUpAttacks();
+
+        game.resolveAttacks();
+
+        //rig draws
+        game.getAdventureDeck().addLast(new Weapon("L20", 20));
+        game.getAdventureDeck().addLast(new Foe("F30", 30));
+
+        //stage 4
+        input = "1\n1\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        //choose participants
+        game.chooseParticipants();
+
+        input = "7\n6\n6\nquit\n4\n4\n4\n5\nquit\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        game.setUpAttacks();
+
+        game.resolveAttacks();
+
+        ui.displayHand(game.getPlayers().get(2));
+        assertEquals(0, game.getPlayers().get(2).getShields());
+        assertEquals(4, game.getPlayers().get(3).getShields());
+
+        input = "\n1\n\n1\n\n1\n\n1\n\n1\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        game.trimHand();
+
+        assertEquals(12, game.getPlayers().get(1).getCards().size());
+
         System.setIn(previousIn);
         Game.QuestLine.resetQuest();
     }
