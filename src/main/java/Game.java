@@ -59,6 +59,11 @@ public class Game {
 
         public static Player getSponsor() {return sponsor;}
         public static Quest getCurrentQuest() {return currentQuest;}
+
+        public static void resetQuest() {
+            sponsor = null;
+            currentQuest = null;
+        }
     }
 
     public Game() {
@@ -199,6 +204,10 @@ public class Game {
 
         String answer = "";
         for (int i = players.indexOf(getCurrentPlayer()); i < players.size(); i++) {
+            if (players.get(i).foeNum() >= QuestLine.currentQuest.getStageNum()) {
+                continue;
+            }
+
             answer = ui.sponsorPrompt(players.get(i));
 
             if (Integer.parseInt(answer) == 2 || answer.toUpperCase().equals("NO")) {

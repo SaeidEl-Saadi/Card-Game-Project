@@ -43,4 +43,28 @@ public class Player {
     public Card removeCard(int index) {
         return cards.remove(index - 1);
     }
+
+    public int foeNum() {
+        int total = 0;
+
+        for (Card c : cards) {
+            if (c instanceof Foe) {
+                total += 1;
+            }
+        }
+
+        return total;
+    }
+
+    public int weaponNum() {
+        int total = 0;
+
+        for (Card c : cards) {
+            if (c instanceof Weapon) {
+                total += 1;
+            }
+        }
+
+        return total;
+    }
 }
