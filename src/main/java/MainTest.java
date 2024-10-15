@@ -4,6 +4,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -506,6 +507,36 @@ public class MainTest {
 
         assertTrue(game.checkValidity(1));
         assertTrue(game.checkValidity(2));
+    }
+
+    @Test
+    @DisplayName("Choose participants")
+    void RESP_10_test_1() {
+        Game game = new Game();
+        UI ui = new UI();
+        game.dealCards();
+
+        Game.QuestLine.setSponsor(game.getPlayers().get(1));
+        Game.QuestLine.setQuest(new Quest("Q2", 2));
+
+        for (Player p : game.getPlayers()) {
+            p.getCards().removeLast();
+        }
+
+        InputStream previousIn = System.in;
+        String input = "1\n1\n2\n";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
+        System.setIn(inputStream);
+
+        game.chooseParticipants();
+
+        assertEquals(12,game.getPlayers().get(0).getCards().size());
+        assertEquals(12,game.getPlayers().get(2).getCards().size());
+        assertEquals(11,game.getPlayers().get(3).getCards().size());
+        assertEquals(2, Game.QuestLine.getParticipents().size());
+        assertEquals(Game.QuestLine.getParticipents().get(0), game.getPlayers().get(0));
+        assertEquals(Game.QuestLine.getParticipents().get(1), game.getPlayers().get(2));
+        System.setIn(previousIn);
     }
 
 }
