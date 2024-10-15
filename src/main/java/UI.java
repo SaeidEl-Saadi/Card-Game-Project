@@ -52,4 +52,38 @@ public class UI {
 
         return scanner.nextLine();
     }
+
+    public String promptStage(Game g, int stage) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Choose Card to add to stage " + stage + " of " + g.getCurrentQuest().getStageNum() + ":\n");
+        displayHand(g.getSponsor());
+
+        System.out.print("Current cards in stage:\n");
+        for (int i = 0; i < g.getCurrentQuest().getStage(stage).size(); i++) {
+            System.out.print((i + 1) + ". " + g.getCurrentQuest().getStage(stage).get(i) + "\n");
+        }
+
+        return scanner.nextLine();
+    }
+
+    public void emptyError() {
+        System.out.print("A stage cannot be empty\n");
+    }
+
+    public void insufficientValue() {
+        System.out.print("Insufficient value for this stage\n");
+    }
+
+    public void tooManyFoes() {
+        System.out.print("No more than 1 foe per stage\n");
+    }
+
+    public void needFoe() {
+        System.out.print("The stage needs a foe\n");
+    }
+
+    public void containsDuplicates() {
+        System.out.print("No repeated weapons per stage\n");
+    }
 }

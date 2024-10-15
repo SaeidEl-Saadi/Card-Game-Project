@@ -47,12 +47,18 @@ public class Game {
 
     public static class QuestLine {
         private static Player sponsor;
+        private static Quest currentQuest;
 
         public static void setSponsor(Player p) {
             sponsor = p;
         }
 
+        public static void setQuest(Quest q) {
+            currentQuest = q;
+        }
+
         public static Player getSponsor() {return sponsor;}
+        public static Quest getCurrentQuest() {return currentQuest;}
     }
 
     public Game() {
@@ -106,8 +112,16 @@ public class Game {
         return QuestLine.getSponsor();
     }
 
+    public Quest getCurrentQuest() {
+        return QuestLine.getCurrentQuest();
+    }
+
     public void setSponsor(Player p) {
         QuestLine.setSponsor(p);
+    }
+
+    public void setQuest(Quest q) {
+        QuestLine.setQuest(q);
     }
 
     public void dealCards() {
@@ -210,6 +224,47 @@ public class Game {
         }
 
         return null;
+    }
+
+    public void setUpQuest(int stage) {
+        UI ui = new UI();
+        String answer = ui.promptStage(this, stage);
+        if (answer.equals("quit")) {
+            return;
+        }
+        QuestLine.currentQuest.getStage(stage).add(QuestLine.getSponsor().removeCard(Integer.parseInt(answer)));
+    }
+
+    public boolean checkValidity(int stage) {
+        UI ui = new UI();
+        if (QuestLine.currentQuest.getStage(stage).isEmpty()) {
+            ui.emptyError();
+            return false;
+        }
+
+        if (stage > 1) {
+            if (QuestLine.currentQuest.computeValue(stage - 1) >= QuestLine.currentQuest.computeValue(stage)) {
+                ui.insufficientValue();
+                return false;
+            }
+        }
+
+        if (QuestLine.currentQuest.foeNum(stage) > 1) {
+            ui.tooManyFoes();
+            return false;
+        }
+
+        if (QuestLine.currentQuest.foeNum(stage) == 0) {
+            ui.needFoe();
+            return false;
+        }
+
+        if (QuestLine.currentQuest.containsDuplicateWeapons(stage)) {
+            ui.containsDuplicates();
+            return false;
+        }
+
+        return true;
     }
 
     private void createFoeCards(String face, int value, int amount) {
