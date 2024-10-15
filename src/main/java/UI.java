@@ -47,11 +47,8 @@ public class UI {
         return s.nextLine();
     }
 
-    public String sponsorPrompt(Player p) {
-        Scanner scanner = new Scanner(System.in);
+    public void sponsorPrompt(Player p) {
         System.out.print(p.getName() + " do you want to sponsor this quest?\n1. Yes\n2. No\n");
-
-        return scanner.nextLine();
     }
 
     public String promptStage(Game g, int stage) {

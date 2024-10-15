@@ -62,6 +62,7 @@ public class Game {
         public static Quest getCurrentQuest() {return currentQuest;}
         public static ArrayList<Player> getParticipents() {return participents;}
         public static ArrayList<ArrayList<Weapon>> getAttacks() {return attacks;}
+        public static int getCurrentStage() {return currentStage;}
 
         public static void resetQuest() {
             sponsor = null;
@@ -91,6 +92,10 @@ public class Game {
 
         public static ArrayList<Weapon> getSpecificAttack(int index) {
             return attacks.get(index);
+        }
+
+        public static void nextStage() {
+            currentStage++;
         }
     }
 
@@ -227,6 +232,7 @@ public class Game {
     }
 
     public Player findSponsor() {
+        Scanner scanner = new Scanner(System.in);
         ArrayList<Player> declined = new ArrayList<>();
         UI ui = new UI();
 
@@ -236,7 +242,8 @@ public class Game {
                 continue;
             }
 
-            answer = ui.sponsorPrompt(players.get(i));
+            ui.sponsorPrompt(players.get(i));
+            answer = scanner.nextLine();
 
             if (Integer.parseInt(answer) == 2 || answer.toUpperCase().equals("NO")) {
                 declined.add(players.get(i));
@@ -251,7 +258,9 @@ public class Game {
                 continue;
             }
 
-            answer = ui.sponsorPrompt(players.get(i));
+            ui.sponsorPrompt(players.get(i));
+            answer = scanner.nextLine();
+
             if (Integer.parseInt(answer) == 2 || answer.toUpperCase().equals("NO")) {
                 declined.add(players.get(i));
                 continue;
@@ -263,13 +272,14 @@ public class Game {
         return null;
     }
 
-    public void setUpQuest(int stage) {
+    public boolean setUpQuest(int stage) {
         UI ui = new UI();
         String answer = ui.promptStage(this, stage);
         if (answer.equals("quit")) {
-            return;
+            return true;
         }
         QuestLine.currentQuest.getStage(stage).add(QuestLine.getSponsor().removeCard(Integer.parseInt(answer)));
+        return false;
     }
 
     public boolean checkValidity(int stage) {
@@ -310,7 +320,7 @@ public class Game {
         String answer = "";
 
         for (int i = 0; i < 4; i++) {
-            if (players.get(i) == QuestLine.getSponsor() || players.get(i).weaponNum() < QuestLine.getCurrentQuest().getStageNum()) {
+            if (players.get(i) == QuestLine.getSponsor() || players.get(i).weaponNum() < QuestLine.getCurrentQuest().getStageNum() || !players.get(i).getEligible()) {
                 continue;
             }
 
@@ -319,7 +329,6 @@ public class Game {
 
             if (answer.equals("1") || answer.toUpperCase().equals("YES")) {
                 drawAdventureCards(players.get(i), 1);
-                trimHand();
                 QuestLine.addParticipant(players.get(i));
                 continue;
             }
@@ -384,6 +393,51 @@ public class Game {
         }
 
         return true;
+    }
+
+    public void resolveAttacks() {
+        ArrayList<Player> losers = new ArrayList<>();
+        ArrayList<Player> winners = new ArrayList<>();
+
+        int attackValue = 0;
+        for (int i = 0; i < QuestLine.attacks.size(); i++) {
+            attackValue = 0;
+            for (Weapon w : QuestLine.getSpecificAttack(i)) {
+                attackValue += w.getValue();
+            }
+
+            if (attackValue >= QuestLine.getCurrentQuest().computeValue(QuestLine.getCurrentStage())) {
+                winners.add(QuestLine.participents.get(i));
+            } else {
+                losers.add(QuestLine.participents.get(i));
+            }
+        }
+
+        System.out.print("Winners:\n");
+        for (Player p : winners) {
+            System.out.print(p.getName() + "\n");
+        }
+
+        System.out.print("Losers:\n");
+        for (Player p : losers) {
+            System.out.print(p.getName() + "\n");
+            p.setEligible(false);
+        }
+
+        QuestLine.clearAttacks();
+        if (QuestLine.getCurrentStage() == QuestLine.getCurrentQuest().getStageNum()) {
+            for (Player p : winners) {
+                p.giveShields(QuestLine.getCurrentQuest().getStageNum());
+            }
+            for (Player p : players) {
+                p.setEligible(true);
+            }
+            drawAdventureCards(QuestLine.getSponsor(), QuestLine.getCurrentQuest().computeCardAmount() + QuestLine.getCurrentQuest().getStageNum());
+            QuestLine.resetQuest();
+            return;
+        }
+        QuestLine.getParticipents().clear();
+        QuestLine.nextStage();
     }
 
     private void createFoeCards(String face, int value, int amount) {

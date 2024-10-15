@@ -77,4 +77,13 @@ public class Quest implements Card {
 
         return false;
     }
+
+    public int computeCardAmount() {
+        int amount = 0;
+        for (ArrayList<Card> stage : stages) {
+            amount += stage.size();
+        }
+
+        return amount;
+    }
 }

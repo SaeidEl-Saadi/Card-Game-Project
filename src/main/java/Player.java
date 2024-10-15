@@ -5,6 +5,7 @@ public class Player {
     private ArrayList<Card> cards = new ArrayList<>();
     private String name;
     private int shields = 0;
+    private boolean eligible = true;
 
     public Player(String name) {
         this.name = name;
@@ -20,6 +21,10 @@ public class Player {
 
     public int getShields() {
         return this.shields;
+    }
+
+    public boolean getEligible() {
+        return eligible;
     }
 
     public void addCard(Card e) {
@@ -66,5 +71,9 @@ public class Player {
         }
 
         return total;
+    }
+
+    public void setEligible(boolean value) {
+        eligible = value;
     }
 }
