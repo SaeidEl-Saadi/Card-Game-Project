@@ -539,4 +539,37 @@ public class MainTest {
         System.setIn(previousIn);
     }
 
+    @Test
+    @DisplayName("Set up valid attack")
+    void RESP_11_test_1() {
+        Game game = new Game();
+        UI ui = new UI();
+
+        //setup quest
+        game.setSponsor(game.getCurrentPlayer());
+        game.setQuest(new Quest("Q2", 2));
+        Game.QuestLine.addParticipant(game.getPlayers().get(1));
+        Game.QuestLine.addParticipant(game.getPlayers().get(2));
+        Game.QuestLine.getCurrentQuest().getStage(1).add(new Foe("F10", 10));
+        Game.QuestLine.getCurrentQuest().getStage(2).add(new Foe("F15", 15));
+
+        //setup cards in hands
+        game.getPlayers().get(1).addCard(new Weapon("L20", 20));
+        game.getPlayers().get(1).addCard(new Weapon("E30", 30));
+        game.getPlayers().get(2).addCard(new Weapon("E30", 30));
+        game.getPlayers().get(2).addCard(new Weapon("E30", 30));
+
+        InputStream previousIn = System.in;
+        String input = "1\n1\nquit\n1\n1\nquit\n1\nquit\n";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
+        System.setIn(inputStream);
+
+        game.setUpAttacks();
+
+        assertEquals(20, Game.QuestLine.getSpecificAttack(0).get(0).getValue());
+        assertEquals(30, Game.QuestLine.getSpecificAttack(0).get(1).getValue());
+        assertEquals(30, Game.QuestLine.getSpecificAttack(1).get(0).getValue());
+        System.setIn(previousIn);
+    }
+
 }
