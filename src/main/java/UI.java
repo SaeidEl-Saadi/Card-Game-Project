@@ -1,4 +1,5 @@
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UI {
@@ -90,5 +91,27 @@ public class UI {
     public void promptParticipant(Player p) {
         System.out.print(p.getName() + " would you like to participate in the Quest with " + Game.QuestLine.getCurrentQuest().getStageNum() + " stages:\n");
         System.out.print("1. Yes\n2. No\n");
+    }
+
+    public void attackPrompt(Player p, ArrayList<Card> lineUp) {
+        System.out.print(p.getName() + " choose weapon cards to attack with:\n");
+        displayHand(p);
+
+        System.out.print("\nCurrent cards in line up:\n");
+        for (int i = 0; i < lineUp.size(); i++) {
+            System.out.print((i+1) + ". " + lineUp.get(i) + "\n");
+        }
+    }
+
+    public void noFoesAllowed() {
+        System.out.print("Only weapon cards are allowed in an attack.\n");
+    }
+
+    public void emptyAttack() {
+        System.out.print("There must be at least 1 weapon card.\n");
+    }
+
+    public void repeatedWeapons() {
+        System.out.print("No repeated weapons in lineup.\n");
     }
 }

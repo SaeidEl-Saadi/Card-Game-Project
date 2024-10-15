@@ -1,7 +1,5 @@
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Scanner;
+import java.util.*;
 
 public class Game {
 
@@ -87,6 +85,10 @@ public class Game {
 
         public static void clearAttacks() {
             attacks.clear();
+        }
+
+        public static ArrayList<Weapon> getSpecificAttack(int index) {
+            return attacks.get(index);
         }
     }
 
@@ -315,12 +317,71 @@ public class Game {
 
             if (answer.equals("1") || answer.toUpperCase().equals("YES")) {
                 drawAdventureCards(players.get(i), 1);
+                trimHand();
                 QuestLine.addParticipant(players.get(i));
                 continue;
             }
 
             QuestLine.removeParticipant(players.get(i));
         }
+    }
+
+    public void setUpAttacks() {
+        Scanner scanner = new Scanner(System.in);
+        ArrayList<Card> lineUp = new ArrayList<>();
+        UI ui = new UI();
+        String answer = "";
+
+        for (int i = 0; i < QuestLine.participents.size(); i++) {
+            while (true) {
+                ui.attackPrompt(QuestLine.participents.get(i), lineUp);
+                answer = scanner.nextLine();
+
+                if (answer.toUpperCase().equals("QUIT")) {
+                    if (checkAttack(lineUp)) {
+                        for (Card c : lineUp) {
+                            QuestLine.attacks.get(i).add((Weapon) c);
+                        }
+                        lineUp.clear();
+                        break;
+                    } else {
+                        for (Card c : lineUp) {
+                            QuestLine.participents.get(i).addCard(c);
+                        }
+                        lineUp.clear();
+                        i--;
+                        break;
+                    }
+                }
+                lineUp.add(QuestLine.participents.get(i).getCards().remove(Integer.parseInt(answer) - 1));
+            }
+        }
+    }
+
+    public boolean checkAttack(ArrayList<Card> cards) {
+        ArrayList<String> cardNames = new ArrayList<>();
+        UI ui = new UI();
+
+        for (Card c : cards) {
+            if (c instanceof Foe) {
+                ui.noFoesAllowed();
+                return false;
+            }
+            cardNames.add(c.getCard());
+        }
+
+        if (cards.isEmpty()) {
+            ui.emptyAttack();
+            return false;
+        }
+
+        Set<String> duplicates = new HashSet<>(cardNames);
+        if (duplicates.size() != cards.size()) {
+            ui.repeatedWeapons();
+            return false;
+        }
+
+        return true;
     }
 
     private void createFoeCards(String face, int value, int amount) {
