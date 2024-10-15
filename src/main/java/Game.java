@@ -321,6 +321,7 @@ public class Game {
 
         for (int i = 0; i < 4; i++) {
             if (players.get(i) == QuestLine.getSponsor() || players.get(i).weaponNum() < QuestLine.getCurrentQuest().getStageNum() || !players.get(i).getEligible()) {
+                players.get(i).setEligible(false);
                 continue;
             }
 
@@ -333,6 +334,7 @@ public class Game {
                 continue;
             }
 
+            players.get(i).setEligible(false);
             QuestLine.removeParticipant(players.get(i));
         }
     }

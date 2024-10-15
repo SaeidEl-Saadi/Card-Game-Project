@@ -24,9 +24,15 @@ public class Main {
                     }
                 }
 
-                game.chooseParticipants();
-                game.setUpAttacks();
-                game.resolveAttacks();
+                boolean flag = true;
+                while (flag) {
+                    game.chooseParticipants();
+                    game.setUpAttacks();
+                    if (Game.QuestLine.getCurrentStage() == Game.QuestLine.getCurrentQuest().getStageNum()) {
+                        flag = false;
+                    }
+                    game.resolveAttacks();
+                }
 
                 Game.QuestLine.resetQuest();
             } else if (c instanceof Event) {
