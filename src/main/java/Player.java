@@ -76,4 +76,9 @@ public class Player {
     public void setEligible(boolean value) {
         eligible = value;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

@@ -231,6 +231,17 @@ public class Game {
         }
     }
 
+    public void trimHand(Player p) {
+        UI ui = new UI();
+        Scanner scanner = new Scanner(System.in);
+        String index = "";
+
+        while (p.getCards().size() > 12) {
+            index = ui.trimPrompt(p, scanner);
+            p.removeCard(Integer.parseInt(index));
+        }
+    }
+
     public Player findSponsor() {
         Scanner scanner = new Scanner(System.in);
         ArrayList<Player> declined = new ArrayList<>();
