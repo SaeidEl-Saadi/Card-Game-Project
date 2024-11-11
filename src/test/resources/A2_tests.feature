@@ -171,4 +171,18 @@ Feature: Quests game
     And "P2" has 11 cards in hand and 5 shields
     And "P4" has 11 cards in hand and 4 shields
 
+  Scenario: 0_winner_quest
+    Given a new game of quests starts
+    And hands are rigged for 0_winner_quest
+    When "P1" draws quest card "Q2"
+    And "P1" is a sponsor
+    And "P1" builds stage 1 with "F5"
+    And "P1" builds stage 2 with "F10"
+    And Nobody participates
+    Then Quest is over
+    And "P1" has 14 cards in hand and 0 shields
+    And "P2" has 12 cards in hand and 0 shields
+    And "P3" has 12 cards in hand and 0 shields
+    And "P4" has 12 cards in hand and 0 shields
+
 

@@ -348,6 +348,14 @@ public class Game {
             players.get(i).setEligible(false);
             QuestLine.removeParticipant(players.get(i));
         }
+
+        for (int i = 0; i < players.size(); i++) {
+            if (players.get(i).getEligible()) {
+                return;
+            }
+        }
+
+        resolveAttacks();
     }
 
     public void setUpAttacks() {
@@ -437,11 +445,23 @@ public class Game {
             p.setEligible(false);
         }
 
-        QuestLine.clearAttacks();
-        if (QuestLine.getCurrentStage() == QuestLine.getCurrentQuest().getStageNum()) {
-            for (Player p : winners) {
-                p.giveShields(QuestLine.getCurrentQuest().getStageNum());
+        boolean noParticipants = true;
+        for (Player p : players) {
+            if (p.getEligible()) {
+                noParticipants = false;
+                break;
             }
+        }
+
+
+        QuestLine.clearAttacks();
+        if (QuestLine.getCurrentStage() == QuestLine.getCurrentQuest().getStageNum() || noParticipants) {
+            if (!noParticipants) {
+                for (Player p : winners) {
+                    p.giveShields(QuestLine.getCurrentQuest().getStageNum());
+                }
+            }
+
             for (Player p : players) {
                 p.setEligible(true);
             }

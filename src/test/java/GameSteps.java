@@ -266,6 +266,26 @@ public class GameSteps {
         game.getEventDeck().addLast(new Quest("Q4", 4));
     }
 
+    @Given("hands are rigged for 0_winner_quest")
+    public void fourthScenarioRig() {
+        game.dealCards();
+
+        //rig P1
+        game.getPlayers().get(0).getCards().clear();
+        game.getPlayers().get(0).addCard(new Foe("F5", 5));
+        game.getPlayers().get(0).addCard(new Foe("F5", 5));
+        game.getPlayers().get(0).addCard(new Foe("F5", 5));
+        game.getPlayers().get(0).addCard(new Foe("F10", 10));
+        game.getPlayers().get(0).addCard(new Foe("F10", 10));
+        game.getPlayers().get(0).addCard(new Foe("F15", 15));
+        game.getPlayers().get(0).addCard(new Foe("F15", 15));
+        game.getPlayers().get(0).addCard(new Foe("F20", 20));
+        game.getPlayers().get(0).addCard(new Weapon("S10", 10));
+        game.getPlayers().get(0).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(0).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(0).addCard(new Weapon("B15", 15));
+    }
+
     @When("{string} draws quest card {string}")
     public void drawQuestCard(String player, String card) {
         game.drawEventCard();
@@ -370,10 +390,27 @@ public class GameSteps {
         System.setIn(new ByteArrayInputStream(buffer.getBytes()));
         game.chooseParticipants();
 
-        System.out.println(Game.QuestLine.getParticipents());
         for (int i = 0; i < Game.QuestLine.getParticipents().size(); i++) {
             assertEquals(arr[i], Game.QuestLine.getParticipents().get(i).getName());
         }
+
+        System.setIn(previousIn);
+    }
+
+    @When("Nobody participates")
+    public void noParticipants() {
+        String buffer = "";
+
+        for (Player p : game.getPlayers()) {
+            if (p.getName().equals(game.getSponsor().getName()) || !p.getEligible()) continue;
+
+            buffer += "2\n";
+        }
+
+        System.setIn(new ByteArrayInputStream(buffer.getBytes()));
+        game.chooseParticipants();
+
+        assertTrue(Game.QuestLine.getParticipents().isEmpty());
 
         System.setIn(previousIn);
     }
@@ -437,9 +474,6 @@ public class GameSteps {
         }
         attacks.clear();
 
-        for (Player p : game.getPlayers()) {
-            System.out.println(p.getEligible());
-        }
         System.setIn(previousIn);
     }
 
@@ -506,6 +540,11 @@ public class GameSteps {
             assertEquals(playerList[i], game.checkWinner().get(i).getName());
             assertEquals(Integer.parseInt(shieldList[i]), game.checkWinner().get(i).getShields());
         }
+    }
+
+    @Then("Quest is over")
+    public void noQuest() {
+        assertNull(game.getCurrentQuest());
     }
 
     private String getIndex(String card, Player p) {
