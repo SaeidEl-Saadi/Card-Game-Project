@@ -172,14 +172,125 @@ public class GameSteps {
         game.getAdventureDeck().addLast(new Weapon("B15", 15));
     }
 
-    @When("{string} draws event card {string}")
-    public void drawEventCard(String player, String card) {
+    @Given("hands are rigged for 1winner_game_with_events scenario")
+    public void thirdScenarioRig(){
+        game.dealCards();
+
+        //rig P1
+        game.getPlayers().get(0).getCards().clear();
+        game.getPlayers().get(0).addCard(new Foe("F5", 5));
+        game.getPlayers().get(0).addCard(new Foe("F5", 5));
+        game.getPlayers().get(0).addCard(new Foe("F5", 5));
+        game.getPlayers().get(0).addCard(new Foe("F10", 10));
+        game.getPlayers().get(0).addCard(new Foe("F10", 10));
+        game.getPlayers().get(0).addCard(new Foe("F15", 15));
+        game.getPlayers().get(0).addCard(new Foe("F15", 15));
+        game.getPlayers().get(0).addCard(new Foe("F20", 20));
+        game.getPlayers().get(0).addCard(new Weapon("S10", 10));
+        game.getPlayers().get(0).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(0).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(0).addCard(new Weapon("B15", 15));
+
+        //rig P2
+        game.getPlayers().get(1).getCards().clear();
+        game.getPlayers().get(1).addCard(new Foe("F5", 5));
+        game.getPlayers().get(1).addCard(new Foe("F5", 5));
+        game.getPlayers().get(1).addCard(new Foe("F15", 15));
+        game.getPlayers().get(1).addCard(new Weapon("D5", 5));
+        game.getPlayers().get(3).addCard(new Weapon("S10", 10));
+        game.getPlayers().get(1).addCard(new Weapon("S10", 10));
+        game.getPlayers().get(1).addCard(new Weapon("S10", 10));
+        game.getPlayers().get(1).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(1).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(1).addCard(new Weapon("B15", 15));
+        game.getPlayers().get(1).addCard(new Weapon("B15", 15));
+        game.getPlayers().get(1).addCard(new Weapon("E30", 30));
+
+        //rig P3
+        game.getPlayers().get(2).getCards().clear();
+        game.getPlayers().get(2).addCard(new Foe("F5", 5));
+        game.getPlayers().get(2).addCard(new Foe("F5", 5));
+        game.getPlayers().get(2).addCard(new Foe("F15", 15));
+        game.getPlayers().get(2).addCard(new Foe("F20", 20));
+        game.getPlayers().get(2).addCard(new Weapon("D5", 5));
+        game.getPlayers().get(2).addCard(new Weapon("S10", 10));
+        game.getPlayers().get(2).addCard(new Weapon("S10", 10));
+        game.getPlayers().get(2).addCard(new Weapon("S10", 10));
+        game.getPlayers().get(2).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(2).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(2).addCard(new Weapon("B15", 15));
+        game.getPlayers().get(2).addCard(new Weapon("L20", 20));
+
+        //rig P4
+        game.getPlayers().get(3).getCards().clear();
+        game.getPlayers().get(3).addCard(new Foe("F5", 5));
+        game.getPlayers().get(3).addCard(new Foe("F15", 5));
+        game.getPlayers().get(3).addCard(new Foe("F15", 5));
+        game.getPlayers().get(3).addCard(new Weapon("D5", 5));
+        game.getPlayers().get(3).addCard(new Weapon("D5", 5));
+        game.getPlayers().get(3).addCard(new Weapon("S10", 10));
+        game.getPlayers().get(3).addCard(new Weapon("S10", 10));
+        game.getPlayers().get(3).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(3).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(3).addCard(new Weapon("B15", 15));
+        game.getPlayers().get(3).addCard(new Weapon("L20", 20));
+        game.getPlayers().get(3).addCard(new Weapon("E30", 30));
+
+        //rig draws
+        game.getAdventureDeck().addLast(new Foe("F30", 30));
+        game.getAdventureDeck().addLast(new Foe("F20", 20));
+        game.getAdventureDeck().addLast(new Foe("F25", 25));
+        game.getAdventureDeck().addLast(new Foe("F25", 25));
+        game.getAdventureDeck().addLast(new Foe("F25", 25));
+        game.getAdventureDeck().addLast(new Foe("F25", 25));
+        game.getAdventureDeck().addLast(new Foe("F25", 25));
+        game.getAdventureDeck().addLast(new Foe("F25", 25));
+        game.getAdventureDeck().addLast(new Weapon("B15", 15));
+        game.getAdventureDeck().addLast(new Weapon("H10", 10));
+        game.getAdventureDeck().addLast(new Weapon("H10", 10));
+        game.getAdventureDeck().addLast(new Weapon("L20", 20));
+        game.getAdventureDeck().addLast(new Weapon("B15", 15));
+        game.getAdventureDeck().addLast(new Weapon("B15", 15));
+        game.getAdventureDeck().addLast(new Weapon("L20", 20));
+        game.getAdventureDeck().addLast(new Weapon("L20", 20));
+        game.getAdventureDeck().addLast(new Weapon("L20", 20));
+        game.getAdventureDeck().addLast(new Weapon("S10", 10));
+        game.getAdventureDeck().addLast(new Weapon("S10", 10));
+        game.getAdventureDeck().addLast(new Weapon("S10", 10));
+
+
+        //event card rig
+        game.getEventDeck().addLast(new Event("Queen's Favor"));
+        game.getEventDeck().addLast(new Event("Prosperity"));
+        game.getEventDeck().addLast(new Event("Plague"));
+        game.getEventDeck().addLast(new Quest("Q4", 4));
+    }
+
+    @When("{string} draws quest card {string}")
+    public void drawQuestCard(String player, String card) {
         game.drawEventCard();
         game.getEventDeck().addLast(new Quest(card, Character.getNumericValue(card.charAt(1))));
         Card eventCardDrawn = game.drawEventCard();
         game.setQuest((Quest) eventCardDrawn);
 
         assertEquals(card, eventCardDrawn.getCard());
+    }
+
+    @When("{string} draws event card {string}")
+    public void drawEventCard(String player, String event) {
+        if (event.equals("Plague")) {
+            int previous = game.getCurrentPlayer().getShields();
+            game.performEventAction(game.drawEventCard());
+            if (previous < 2) {
+                assertEquals(0, game.getCurrentPlayer().getShields());
+            } else {
+                assertEquals(previous - 2, game.getCurrentPlayer().getShields());
+            }
+            return;
+        }
+        Card drawnCard = game.drawEventCard();
+        game.performEventAction(drawnCard);
+        assertEquals(event, drawnCard.getCard());
     }
 
     @When("{string} is a sponsor")
