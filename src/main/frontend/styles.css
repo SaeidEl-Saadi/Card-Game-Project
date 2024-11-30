@@ -1,0 +1,128 @@
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(19, 111, 0);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(11, 68, 0);
+}
+
+body {
+    background-color: rgb(181, 181, 255);
+    padding-left: 20px;
+}
+
+header#mainHeader {
+    color: rgb(19, 111, 0);
+    font-weight: bold;
+    font-size: 40px;
+}
+
+.layout {
+    display: flex; /* Flexbox for layout */
+    align-items: center; /* Vertically align items */
+    justify-content: flex-start; /* Start items from the left */
+    height: calc(80vh - 80px); /* Full height minus header space */
+    gap: 300px; /* Space between buttons and textarea */
+}
+
+.inputBox {
+    padding: 12px 20px;
+    margin-left: 38%;
+    margin-bottom: 10px;
+    width: 500px;
+    box-sizing: border-box;
+    border: 2px solid rgb(19, 111, 0);
+    background-color: rgb(181, 181, 255);
+    border-radius: 4px;
+    color: rgb(19, 111, 0);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.inputBox:focus {
+     outline: none;
+     border: 3px solid;
+}
+
+.actionButtons {
+    margin-left: 38%;
+}
+
+.actionButtons button {
+    width: auto; /* Make buttons stretch to fill the container's width */
+    margin-bottom: 10px; /* Add spacing between buttons */
+    padding: 16px 22px; /* Add padding for button size */
+    font-size: 15px; /* Adjust font size */
+    font-weight: bold;
+    background-color: rgb(19, 111, 0);; /* Button background color (blue) */
+    color: rgb(181, 181, 255);; /* Button text color */
+    border: none; /* Remove borders */
+    border-radius: 12px; /* Optional rounded corners */
+    cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+.buttons {
+      width: 200px;
+      margin: 0;
+      padding: 30px;
+      background-color: rgb(181, 181, 255);
+      text-align: center;
+      display: flex;
+      flex-direction: column; /* Stack buttons vertically */
+}
+
+.buttons button {
+      display: block; /* Make buttons block-level elements to stack them */
+      width: 250px; /* Make buttons stretch to fill the container's width */
+      margin-bottom: 10px; /* Add spacing between buttons */
+      padding: 16px 22px; /* Add padding for button size */
+      font-size: 15px; /* Adjust font size */
+      font-weight: bold;
+      background-color: rgb(19, 111, 0);; /* Button background color (blue) */
+      color: rgb(181, 181, 255);; /* Button text color */
+      border: none; /* Remove borders */
+      border-radius: 12px; /* Optional rounded corners */
+      cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+.console {
+    padding: 22px 10px;
+    margin: 4px;
+    box-sizing: border-box;
+    border: 2px solid rgb(19, 111, 0);
+    background-color: rgb(181, 181, 255);
+    border-radius: 4px;
+    color: rgb(19, 111, 0);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 15px;
+    font-weight: bold;
+    resize: none;
+    width: 500px;
+    height: 350px;
+    text-align: left;
+    overflow-y: auto;
+}
+
+.console:focus {
+    outline: none;
+}
+
+.buttons button:hover, .actionButtons button:hover {
+    background-color: rgb(11, 68, 0);
+}
+
+#resetButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.startButtons:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

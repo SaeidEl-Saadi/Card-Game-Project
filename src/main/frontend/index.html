@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Game of Quests</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <header id="mainHeader">Game of Quests</header>
+        <div class="layout">
+            <div class="buttons">
+                <button class="startButtons" onclick="startGame()">Start General Game</button>
+                <button class="startButtons">Start</br>A1_scenario</button>
+                <button class="startButtons">Start 2winner_game_2winner_quest</button>
+                <button class="startButtons">Start 1winner_game_with_events</button>
+                <button class="startButtons">Start</br>0_winner_quest</button>
+            </div>
+            <textarea class="console" readonly></textarea>
+        </div>
+        <input class="inputBox" type="text"></input>
+        </br>
+        <div class="actionButtons">
+            <button>Stage Card</button>
+            <button>Trim Card</button>
+            <button>Prepare Attack</br>Card</button>
+            <button onclick="continueButton()">Continue/Enter</button>
+            </br>
+            <button id="resetButton" disabled>Reset Game</button>
+        </div>
+        <script src="script.js"></script>
+    </body>
+</html>
