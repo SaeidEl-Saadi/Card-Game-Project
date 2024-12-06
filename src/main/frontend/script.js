@@ -251,7 +251,6 @@ async function updateTable() {
             for(let card of player.cards) {
                 document.getElementById("p" + player.name.charAt(1)).value += card.card + ", ";
             }
-            console.log(player.cards);
         }
     })
 }

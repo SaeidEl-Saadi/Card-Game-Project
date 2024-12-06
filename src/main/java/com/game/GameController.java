@@ -44,6 +44,8 @@ public class GameController {
         game = new Game();
         game.dealCards();
         game.getEventDeck().remove(game.getEventDeck().size() - 1);
+        game.getEventDeck().remove(game.getEventDeck().size() - 1);
+        game.getEventDeck().add(new Event("Plague"));
         game.getEventDeck().add(new Quest("Q2", 2));
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -271,7 +273,7 @@ public class GameController {
             return questBuildPrompt();
         }
 
-        return "";
+        return " ";
     }
 
     public String drawCard() {
@@ -462,7 +464,20 @@ public class GameController {
         if (Game.QuestLine.getCurrentQuest() != null) {
             attackSetup();
         } else {
+            for (Player p : game.getPlayers()) {
+                if (p.getShields() >= 7) {
+                    System.out.println("WINNERS:");
+                    for (Player pl : game.checkWinner()) {
+                        System.out.println(pl.getName());
+                    }
+                    gameStage = "gameOver";
+                    return;
+                }
+            }
             gameStage = "drawCard";
+            sponsorIndex = -1;
+            participateIndex = 0;
+            stageBuildNum = 1;
             game.nextTurn();
             System.out.println("It is " + game.getCurrentPlayer().getName() + "'s turn");
             System.out.println("Press continue button...");
@@ -495,8 +510,12 @@ public class GameController {
                 }
             }
             gameStage = "drawCard";
+            sponsorIndex = -1;
+            participateIndex = 0;
+            stageBuildNum = 1;
             return;
         } else {
+            participateIndex = 0;
             gameStage = "findParticipants";
             System.out.println(participantPrompt());
         }

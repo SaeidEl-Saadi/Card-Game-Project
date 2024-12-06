@@ -403,10 +403,13 @@ public class Game {
             cardNames.add(c.getCard());
         }
 
+        /*
         if (cards.isEmpty()) {
             ui.emptyAttack();
             return false;
         }
+        */
+
 
         Set<String> duplicates = new HashSet<>(cardNames);
         if (duplicates.size() != cards.size()) {
