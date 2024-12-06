@@ -23,11 +23,11 @@ header#mainHeader {
 }
 
 .layout {
-    display: flex; /* Flexbox for layout */
-    align-items: center; /* Vertically align items */
-    justify-content: flex-start; /* Start items from the left */
-    height: calc(80vh - 80px); /* Full height minus header space */
-    gap: 37px; /* Space between buttons and textarea */
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: calc(80vh - 80px);
+    gap: 37px;
 }
 
 .inputBox {
@@ -55,16 +55,16 @@ header#mainHeader {
 }
 
 .actionButtons button {
-    width: auto; /* Make buttons stretch to fill the container's width */
-    margin-bottom: 10px; /* Add spacing between buttons */
-    padding: 16px 22px; /* Add padding for button size */
-    font-size: 15px; /* Adjust font size */
+    width: auto;
+    margin-bottom: 10px;
+    padding: 16px 22px;
+    font-size: 15px;
     font-weight: bold;
-    background-color: rgb(19, 111, 0); /* Button background color (blue) */
-    color: rgb(181, 181, 255); /* Button text color */
-    border: none; /* Remove borders */
-    border-radius: 12px; /* Optional rounded corners */
-    cursor: pointer; /* Change cursor to pointer on hover */
+    background-color: rgb(19, 111, 0);
+    color: rgb(181, 181, 255);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
 }
 
 .buttons {
@@ -74,21 +74,21 @@ header#mainHeader {
       background-color: rgb(181, 181, 255);
       text-align: center;
       display: flex;
-      flex-direction: column; /* Stack buttons vertically */
+      flex-direction: column;
 }
 
 .buttons button {
-      display: block; /* Make buttons block-level elements to stack them */
-      width: 250px; /* Make buttons stretch to fill the container's width */
-      margin-bottom: 10px; /* Add spacing between buttons */
-      padding: 16px 22px; /* Add padding for button size */
-      font-size: 15px; /* Adjust font size */
+      display: block;
+      width: 250px;
+      margin-bottom: 10px;
+      padding: 16px 22px;
+      font-size: 15px;
       font-weight: bold;
-      background-color: rgb(19, 111, 0); /* Button background color (blue) */
-      color: rgb(181, 181, 255); /* Button text color */
-      border: none; /* Remove borders */
-      border-radius: 12px; /* Optional rounded corners */
-      cursor: pointer; /* Change cursor to pointer on hover */
+      background-color: rgb(19, 111, 0);
+      color: rgb(181, 181, 255);
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
 }
 
 .console {
@@ -112,7 +112,7 @@ header#mainHeader {
 .infoTable {
     border-collapse: collapse;
     border: 2px solid rgb(19, 111, 0);
-    font-size: 15px; /* Adjust font size */
+    font-size: 15px;
     font-weight: bold;
     color: rgb(19, 111, 0);
 }
@@ -139,4 +139,40 @@ th, td {
 .startButtons:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+}
+
+.text-area-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    margin-top: 30px;
+}
+
+.text-area-box {
+    width: 22%;
+    text-align: center;
+}
+
+#p1, #p2, #p3, #p4 {
+    padding: 22px 10px;
+    margin: 4px;
+    box-sizing: border-box;
+    border: 2px solid rgb(19, 111, 0);
+    background-color: rgb(181, 181, 255);
+    border-radius: 4px;
+    color: rgb(19, 111, 0);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 15px;
+    font-weight: bold;
+    resize: none;
+    width: 300px;
+    height: 350px;
+    text-align: left;
+    overflow-y: auto;
+}
+
+label {
+    color: rgb(19, 111, 0);
+    font-weight: bold;
+    font-size: 20px;
 }

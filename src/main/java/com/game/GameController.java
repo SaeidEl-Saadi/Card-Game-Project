@@ -9,7 +9,7 @@ import java.util.ArrayList;
 @RestController
 @CrossOrigin(origins = "*")
 public class GameController {
-    Game game;
+    Game game = null;
     UI ui = new UI();
     PrintStream previousOut = System.out;
     InputStream previousIn = System.in;
@@ -45,6 +45,211 @@ public class GameController {
         game.dealCards();
         game.getEventDeck().remove(game.getEventDeck().size() - 1);
         game.getEventDeck().add(new Quest("Q2", 2));
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        PrintStream out = new PrintStream(byteArrayOutputStream);
+
+        System.setOut(out);
+        System.out.println("It is P1's turn");
+
+        System.setOut(previousOut);
+        return byteArrayOutputStream.toString();
+    }
+
+    @GetMapping("/startA1")
+    public String startA1() {
+        game = new Game();
+        game.dealCards();
+
+        //rig P1
+        game.getPlayers().get(0).getCards().clear();
+        game.getPlayers().get(0).addCard(new Foe("F5", 5));
+        game.getPlayers().get(0).addCard(new Foe("F5", 5));
+        game.getPlayers().get(0).addCard(new Foe("F15", 15));
+        game.getPlayers().get(0).addCard(new Foe("F15", 15));
+        game.getPlayers().get(0).addCard(new Weapon("D5", 5));
+        game.getPlayers().get(0).addCard(new Weapon("S10", 10));
+        game.getPlayers().get(0).addCard(new Weapon("S10", 10));
+        game.getPlayers().get(0).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(0).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(0).addCard(new Weapon("B15", 15));
+        game.getPlayers().get(0).addCard(new Weapon("B15", 15));
+        game.getPlayers().get(0).addCard(new Weapon("L20", 20));
+
+        //rig P2
+        game.getPlayers().get(1).getCards().clear();
+        game.getPlayers().get(1).addCard(new Foe("F5", 5));
+        game.getPlayers().get(1).addCard(new Foe("F5", 5));
+        game.getPlayers().get(1).addCard(new Foe("F15", 15));
+        game.getPlayers().get(1).addCard(new Foe("F15", 15));
+        game.getPlayers().get(1).addCard(new Foe("F40", 40));
+        game.getPlayers().get(1).addCard(new Weapon("D5", 5));
+        game.getPlayers().get(1).addCard(new Weapon("S10", 10));
+        game.getPlayers().get(1).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(1).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(1).addCard(new Weapon("B15", 15));
+        game.getPlayers().get(1).addCard(new Weapon("B15", 15));
+        game.getPlayers().get(1).addCard(new Weapon("E30", 30));
+
+        //rig P3
+        game.getPlayers().get(2).getCards().clear();
+        game.getPlayers().get(2).addCard(new Foe("F5", 5));
+        game.getPlayers().get(2).addCard(new Foe("F5", 5));
+        game.getPlayers().get(2).addCard(new Foe("F5", 5));
+        game.getPlayers().get(2).addCard(new Foe("F15", 15));
+        game.getPlayers().get(2).addCard(new Weapon("D5", 5));
+        game.getPlayers().get(2).addCard(new Weapon("S10", 10));
+        game.getPlayers().get(2).addCard(new Weapon("S10", 10));
+        game.getPlayers().get(2).addCard(new Weapon("S10", 10));
+        game.getPlayers().get(2).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(2).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(2).addCard(new Weapon("B15", 15));
+        game.getPlayers().get(2).addCard(new Weapon("L20", 20));
+
+        //rig P4
+        game.getPlayers().get(3).getCards().clear();
+        game.getPlayers().get(3).addCard(new Foe("F5", 5));
+        game.getPlayers().get(3).addCard(new Foe("F15", 5));
+        game.getPlayers().get(3).addCard(new Foe("F15", 5));
+        game.getPlayers().get(3).addCard(new Foe("F40", 40));
+        game.getPlayers().get(3).addCard(new Weapon("D5", 5));
+        game.getPlayers().get(3).addCard(new Weapon("D5", 5));
+        game.getPlayers().get(3).addCard(new Weapon("S10", 10));
+        game.getPlayers().get(3).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(3).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(3).addCard(new Weapon("B15", 15));
+        game.getPlayers().get(3).addCard(new Weapon("L20", 20));
+        game.getPlayers().get(3).addCard(new Weapon("E30", 30));
+
+        //event deck rig
+        game.getEventDeck().add(new Quest("Q4", 4));
+
+        //rig draws
+        game.getAdventureDeck().add(new Weapon("L20", 20));
+        game.getAdventureDeck().add(new Foe("F30", 30));
+        game.getAdventureDeck().add(new Weapon("S10", 10));
+        game.getAdventureDeck().add(new Weapon("B15", 15));
+        game.getAdventureDeck().add(new Weapon("L20", 20));
+        game.getAdventureDeck().add(new Weapon("L20", 20));
+        game.getAdventureDeck().add(new Foe("F10", 10));
+        game.getAdventureDeck().add(new Weapon("B15", 15));
+        game.getAdventureDeck().add(new Weapon("S10", 10));
+        game.getAdventureDeck().add(new Foe("F30", 30));
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        PrintStream out = new PrintStream(byteArrayOutputStream);
+
+        System.setOut(out);
+        System.out.println("It is P1's turn");
+
+        System.setOut(previousOut);
+        return byteArrayOutputStream.toString();
+    }
+
+    @GetMapping("/second_Scenario")
+    public String second_Scenario() {
+        game = new Game();
+        game.dealCards();
+
+        //rig P1
+        game.getPlayers().get(0).getCards().clear();
+        game.getPlayers().get(0).addCard(new Foe("F5", 5));
+        game.getPlayers().get(0).addCard(new Foe("F5", 5));
+        game.getPlayers().get(0).addCard(new Foe("F10", 10));
+        game.getPlayers().get(0).addCard(new Foe("F10", 10));
+        game.getPlayers().get(0).addCard(new Foe("F15", 15));
+        game.getPlayers().get(0).addCard(new Foe("F15", 15));
+        game.getPlayers().get(0).addCard(new Weapon("D5", 5));
+        game.getPlayers().get(0).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(0).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(0).addCard(new Weapon("B15", 15));
+        game.getPlayers().get(0).addCard(new Weapon("B15", 15));
+        game.getPlayers().get(0).addCard(new Weapon("L20", 20));
+
+        //rig P2
+        game.getPlayers().get(1).getCards().clear();
+        game.getPlayers().get(1).addCard(new Foe("F40", 40));
+        game.getPlayers().get(1).addCard(new Foe("F50", 50));
+        game.getPlayers().get(1).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(1).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(1).addCard(new Weapon("S10", 10));
+        game.getPlayers().get(1).addCard(new Weapon("S10", 10));
+        game.getPlayers().get(1).addCard(new Weapon("S10", 10));
+        game.getPlayers().get(1).addCard(new Weapon("B15", 15));
+        game.getPlayers().get(1).addCard(new Weapon("B15", 15));
+        game.getPlayers().get(1).addCard(new Weapon("L20", 20));
+        game.getPlayers().get(1).addCard(new Weapon("L20", 20));
+        game.getPlayers().get(1).addCard(new Weapon("E30", 30));
+
+        //rig P3
+        game.getPlayers().get(2).getCards().clear();
+        game.getPlayers().get(2).addCard(new Foe("F5", 5));
+        game.getPlayers().get(2).addCard(new Foe("F5", 5));
+        game.getPlayers().get(2).addCard(new Foe("F5", 5));
+        game.getPlayers().get(2).addCard(new Foe("F5", 5));
+        game.getPlayers().get(2).addCard(new Weapon("D5", 5));
+        game.getPlayers().get(2).addCard(new Weapon("D5", 5));
+        game.getPlayers().get(2).addCard(new Weapon("D5", 5));
+        game.getPlayers().get(2).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(2).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(2).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(2).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(2).addCard(new Weapon("H10", 10));
+
+        //rig P4
+        game.getPlayers().get(3).getCards().clear();
+        game.getPlayers().get(3).addCard(new Foe("F50", 50));
+        game.getPlayers().get(3).addCard(new Foe("F70", 70));
+        game.getPlayers().get(3).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(3).addCard(new Weapon("H10", 10));
+        game.getPlayers().get(3).addCard(new Weapon("S10", 10));
+        game.getPlayers().get(3).addCard(new Weapon("S10", 10));
+        game.getPlayers().get(3).addCard(new Weapon("S10", 10));
+        game.getPlayers().get(3).addCard(new Weapon("B15", 15));
+        game.getPlayers().get(3).addCard(new Weapon("B15", 15));
+        game.getPlayers().get(3).addCard(new Weapon("L20", 20));
+        game.getPlayers().get(3).addCard(new Weapon("L20", 20));
+        game.getPlayers().get(3).addCard(new Weapon("E30", 30));
+
+        //event deck rig
+        game.getEventDeck().add(new Quest("Q3", 3));
+        game.getEventDeck().add(new Quest("Q4", 4));
+
+        //rig draws
+        game.getAdventureDeck().add(new Weapon("L20", 20));
+        game.getAdventureDeck().add(new Weapon("B15", 15));
+        game.getAdventureDeck().add(new Weapon("B15", 15));
+        game.getAdventureDeck().add(new Weapon("S10", 10));
+        game.getAdventureDeck().add(new Foe("F30", 30));
+        game.getAdventureDeck().add(new Foe("F25", 25));
+        game.getAdventureDeck().add(new Foe("F20", 20));
+        game.getAdventureDeck().add(new Foe("F20", 20));
+        game.getAdventureDeck().add(new Foe("F25", 25));
+        game.getAdventureDeck().add(new Foe("F25", 25));
+        game.getAdventureDeck().add(new Foe("F15", 15));
+        game.getAdventureDeck().add(new Foe("F15", 15));
+        game.getAdventureDeck().add(new Weapon("D5", 5));
+        game.getAdventureDeck().add(new Weapon("D5", 5));
+        game.getAdventureDeck().add(new Foe("F30", 30));
+        game.getAdventureDeck().add(new Foe("F25", 25));
+        game.getAdventureDeck().add(new Foe("F25", 25));
+        game.getAdventureDeck().add(new Foe("F20", 20));
+        game.getAdventureDeck().add(new Foe("F20", 20));
+        game.getAdventureDeck().add(new Foe("F20", 20));
+        game.getAdventureDeck().add(new Foe("F20", 20));
+        game.getAdventureDeck().add(new Foe("F15", 15));
+        game.getAdventureDeck().add(new Foe("F15", 15));
+        game.getAdventureDeck().add(new Foe("F10", 10));
+        game.getAdventureDeck().add(new Foe("F5", 5));
+        game.getAdventureDeck().add(new Foe("F20", 20));
+        game.getAdventureDeck().add(new Foe("F15", 15));
+        game.getAdventureDeck().add(new Foe("F15", 15));
+        game.getAdventureDeck().add(new Foe("F30", 30));
+        game.getAdventureDeck().add(new Foe("F30", 30));
+        game.getAdventureDeck().add(new Foe("F10", 10));
+        game.getAdventureDeck().add(new Foe("F10", 10));
+        game.getAdventureDeck().add(new Foe("F40", 40));
+        game.getAdventureDeck().add(new Foe("F5", 5));
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         PrintStream out = new PrintStream(byteArrayOutputStream);
@@ -393,6 +598,7 @@ public class GameController {
 
     @PostMapping("/reset")
     public void reset() {
+        Game.QuestLine.resetQuest();
         game = null;
         sponsorIndex = -1;
         participateIndex = 0;

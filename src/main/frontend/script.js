@@ -20,6 +20,44 @@ async function startGame() {
     }
 }
 
+async function A1Start() {
+    try {
+        const consoleBox = document.getElementsByClassName("console")[0];
+        const buttons = document.getElementsByClassName("startButtons");
+        document.getElementById("resetButton").disabled = false;
+        for (let button of buttons) {
+            button.disabled = true;
+        }
+        let preOutput = await fetch("http://localhost:8080/startA1", {method: "GET"});
+        let output = await preOutput.text();
+
+        consoleBox.value += "\n> " + output;
+        consoleBox.scrollTop = consoleBox.scrollHeight;
+        updateTable()
+    } catch (error) {
+        console.error("Error in startGame: ", error);
+    }
+}
+
+async function second_Scenario() {
+    try {
+        const consoleBox = document.getElementsByClassName("console")[0];
+        const buttons = document.getElementsByClassName("startButtons");
+        document.getElementById("resetButton").disabled = false;
+        for (let button of buttons) {
+            button.disabled = true;
+        }
+        let preOutput = await fetch("http://localhost:8080/second_Scenario", {method: "GET"});
+        let output = await preOutput.text();
+
+        consoleBox.value += "\n> " + output;
+        consoleBox.scrollTop = consoleBox.scrollHeight;
+        updateTable()
+    } catch (error) {
+        console.error("Error in startGame: ", error);
+    }
+}
+
 async function continueButton() {
     try {
         let gameStage = await fetch("http://localhost:8080/getGameStage", {method: "GET"});
@@ -165,6 +203,13 @@ function sleep(ms) {
 }
 
 async function resetButton() {
+    await fetch("http://localhost:8080/reset", {method: "POST"});
+    document.getElementById("resetButton").disabled = true;
+    const buttons = document.getElementsByClassName("startButtons");
+    for (let button of buttons) {
+        button.disabled = false;
+    }
+
     lastOutput = "";
     const input = document.querySelector(".inputBox");
     const consoleBox = document.querySelector(".console");
@@ -172,12 +217,22 @@ async function resetButton() {
     input.value = "";
     consoleBox.value = "";
 
-    await fetch("http://localhost:8080/reset", {method: "POST"});
-    document.getElementById("resetButton").disabled = true;
-    const buttons = document.getElementsByClassName("startButtons");
-    for (let button of buttons) {
-        button.disabled = false;
-    }
+    document.querySelector("#p1").value = "";
+    document.querySelector("#p2").value = "";
+    document.querySelector("#p3").value = "";
+    document.querySelector("#p4").value = "";
+
+    document.querySelector("#p1Shields").textContent = "";
+    document.querySelector("#p1Cards").textContent = "";
+
+    document.querySelector("#p2Shields").textContent = "";
+    document.querySelector("#p2Cards").textContent = "";
+
+    document.querySelector("#p3Shields").textContent = "";
+    document.querySelector("#p3Cards").textContent = "";
+
+    document.querySelector("#p4Shields").textContent = "";
+    document.querySelector("#p4Cards").textContent = "";
 }
 
 async function updateTable() {
@@ -187,9 +242,18 @@ async function updateTable() {
     }})
     .then(response => response.json())
     .then(data => {
+        if (data === null) return;
         for (let player of data.players) {
             document.querySelector("." + player.name).children[1].textContent = player.shields;
             document.querySelector("." + player.name).children[2].textContent = player.cards.length;
+
+            document.getElementById("p" + player.name.charAt(1)).value = "";
+            for(let card of player.cards) {
+                document.getElementById("p" + player.name.charAt(1)).value += card.card + ", ";
+            }
+            console.log(player.cards);
         }
     })
 }
+
+setInterval(updateTable, 100);
