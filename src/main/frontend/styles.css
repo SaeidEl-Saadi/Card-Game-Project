@@ -27,7 +27,7 @@ header#mainHeader {
     align-items: center; /* Vertically align items */
     justify-content: flex-start; /* Start items from the left */
     height: calc(80vh - 80px); /* Full height minus header space */
-    gap: 300px; /* Space between buttons and textarea */
+    gap: 37px; /* Space between buttons and textarea */
 }
 
 .inputBox {
@@ -60,8 +60,8 @@ header#mainHeader {
     padding: 16px 22px; /* Add padding for button size */
     font-size: 15px; /* Adjust font size */
     font-weight: bold;
-    background-color: rgb(19, 111, 0);; /* Button background color (blue) */
-    color: rgb(181, 181, 255);; /* Button text color */
+    background-color: rgb(19, 111, 0); /* Button background color (blue) */
+    color: rgb(181, 181, 255); /* Button text color */
     border: none; /* Remove borders */
     border-radius: 12px; /* Optional rounded corners */
     cursor: pointer; /* Change cursor to pointer on hover */
@@ -84,8 +84,8 @@ header#mainHeader {
       padding: 16px 22px; /* Add padding for button size */
       font-size: 15px; /* Adjust font size */
       font-weight: bold;
-      background-color: rgb(19, 111, 0);; /* Button background color (blue) */
-      color: rgb(181, 181, 255);; /* Button text color */
+      background-color: rgb(19, 111, 0); /* Button background color (blue) */
+      color: rgb(181, 181, 255); /* Button text color */
       border: none; /* Remove borders */
       border-radius: 12px; /* Optional rounded corners */
       cursor: pointer; /* Change cursor to pointer on hover */
@@ -107,6 +107,20 @@ header#mainHeader {
     height: 350px;
     text-align: left;
     overflow-y: auto;
+}
+
+.infoTable {
+    border-collapse: collapse;
+    border: 2px solid rgb(19, 111, 0);
+    font-size: 15px; /* Adjust font size */
+    font-weight: bold;
+    color: rgb(19, 111, 0);
+}
+
+th, td {
+    border: 2px solid rgb(19, 111, 0);
+    padding: 8px;
+    text-align: center;
 }
 
 .console:focus {

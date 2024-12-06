@@ -16,17 +16,45 @@
                 <button class="startButtons">Start 1winner_game_with_events</button>
                 <button class="startButtons">Start</br>0_winner_quest</button>
             </div>
+            <table class="infoTable">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Shields</th>
+                        <th>Number of Cards</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="P1">
+                        <th>P1</th>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr class="P2">
+                        <th>P2</th>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr class="P3">
+                        <th>P3</th>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr class="P4">
+                        <th>P4</th>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
             <textarea class="console" readonly></textarea>
         </div>
         <input class="inputBox" type="text"></input>
         </br>
         <div class="actionButtons">
-            <button>Stage Card</button>
-            <button>Trim Card</button>
-            <button>Prepare Attack</br>Card</button>
             <button onclick="continueButton()">Continue/Enter</button>
             </br>
-            <button id="resetButton" disabled>Reset Game</button>
+            <button onclick="resetButton()" id="resetButton" disabled>Reset Game</button>
         </div>
         <script src="script.js"></script>
     </body>

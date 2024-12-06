@@ -38,15 +38,18 @@ public class UI {
         Scanner scanner = new Scanner(System.in);
         scanner.nextLine();
         System.out.print("\n");
+        scanner.close();
     }
 
     public String trimPrompt(Player p, Scanner s) {
-        System.out.print(p.getName() + " needs to trim their hand (press enter to show hand):\n");
+        System.out.print(p.getName() + " needs to trim their hand (enter anything to show hand):\n");
         s.nextLine();
 
         displayHand(p);
 
-        return s.nextLine();
+        String answer = s.nextLine();
+
+        return answer;
     }
 
     public void sponsorPrompt(Player p) {

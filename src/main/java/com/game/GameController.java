@@ -1,33 +1,47 @@
 package com.game;
 
+import org.openqa.selenium.By;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.PrintStream;
+import java.io.*;
 import java.util.ArrayList;
 
 @RestController
-@CrossOrigin(origins = "http://127.0.0.1:8081")
+@CrossOrigin(origins = "*")
 public class GameController {
-    Game game = new Game();
+    Game game;
     UI ui = new UI();
     PrintStream previousOut = System.out;
     InputStream previousIn = System.in;
     int sponsorIndex = -1;
+    int participateIndex = 0;
+    int stageBuildNum = 1;
     ArrayList<Boolean> sponsorAsked = new ArrayList<>();
+    ArrayList<Boolean> participating = new ArrayList<>();
+
+    ByteArrayOutputStream tempOutput = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(tempOutput);
+
+    PipedInputStream pipedInputStream;
+    PipedOutputStream pipedOutputStream;
 
     String gameStage = "drawCard";
 
-    public GameController() {
+    public GameController() throws IOException {
         for (int i = 0; i < 4; i++) {
             sponsorAsked.add(false);
+            participating.add(false);
         }
+
+        pipedInputStream = new PipedInputStream();
+        pipedOutputStream = new PipedOutputStream();
+
+        pipedInputStream.connect(pipedOutputStream);
     }
 
     @GetMapping("/start")
     public String start() {
+        game = new Game();
         game.dealCards();
         game.getEventDeck().remove(game.getEventDeck().size() - 1);
         game.getEventDeck().add(new Quest("Q2", 2));
@@ -48,6 +62,8 @@ public class GameController {
             return drawCard();
         } else if (gameStage.equals("findSponsor")) {
             return findSponsor();
+        } else if (gameStage.equals("questBuildPrompt")) {
+            return questBuildPrompt();
         }
 
         return "";
@@ -68,7 +84,9 @@ public class GameController {
             game.setQuest((Quest) c);
         } else if (c instanceof Event) {
             game.performEventAction(c);
-            return displayNextTurn(byteArrayOutputStream);
+            gameStage = "trimHand";
+            System.out.println("Press continue button...");
+            return byteArrayOutputStream.toString();
         }
 
         return byteArrayOutputStream.toString();
@@ -125,6 +143,160 @@ public class GameController {
         return byteArrayOutputStream.toString();
     }
 
+    public String questBuildPrompt() {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        PrintStream out = new PrintStream(byteArrayOutputStream);
+        System.setOut(out);
+
+        String input = "\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        ui.promptStage(game, stageBuildNum);
+
+        System.setOut(previousOut);
+        System.setIn(previousIn);
+        gameStage = "questBuild";
+        return byteArrayOutputStream.toString();
+    }
+
+    @PostMapping("/questBuild")
+    public String questBuild(@RequestBody String answer) {
+        System.setOut(previousOut);
+        String input = answer + "\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+        if (game.getCurrentQuest().getStageNum() == stageBuildNum && answer.equals("quit")) {
+            game.setUpQuest(stageBuildNum);
+            gameStage = "findParticipants";
+            return participantPrompt(); //PARTICIPANT PROMPT
+        } else if (game.setUpQuest(stageBuildNum)) {
+            stageBuildNum++;
+        }
+
+        return questBuildPrompt();
+    }
+
+    public String participantPrompt() {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        PrintStream out = new PrintStream(byteArrayOutputStream);
+        System.setOut(out);
+
+        while (true) {
+            if (game.getPlayers().get(participateIndex).getName().equals(game.getSponsor().getName()) || !game.getPlayers().get(participateIndex).getEligible()) {
+                if (participateIndex == 3) {
+                    for (Boolean b : participating) {
+                        if (b) {
+                            return chooseParticipant("2");
+                        }
+                    }
+                    for (int i = 0; i < 4; i++) {
+                        sponsorAsked.set(i, false);
+                        participating.set(i, false);
+                    }
+
+                    Game.QuestLine.resetQuest();
+                    sponsorIndex = -1;
+                    participateIndex = 0;
+                    gameStage = "drawCard";
+                    return displayNextTurn();
+                } else {
+                    participateIndex++;
+                }
+                continue;
+            }
+
+            break;
+        }
+
+        gameStage = "chooseParticipant";
+        ui.promptParticipant(game.getPlayers().get(participateIndex));
+        System.setOut(previousOut);
+        return byteArrayOutputStream.toString();
+    }
+
+    @PostMapping("/chooseParticipant")
+    public String chooseParticipant(@RequestBody String answer) {
+        String input = "";
+
+        if (answer.equals("1")) {
+            participating.set(participateIndex, true);
+        }
+
+        if (participateIndex < 3) {
+            participateIndex++;
+            return participantPrompt();
+        }
+
+        for (int i = 0; i < 4; i++) {
+            if (game.getPlayers().get(i).getName().equals(game.getSponsor().getName()) || !game.getPlayers().get(i).getEligible()) {
+                continue;
+            }
+
+            if (participating.get(i)) {
+                input += "1\n";
+            } else {
+                input += "2\n";
+            }
+        }
+
+        participateIndex = 0;
+        System.setOut(previousOut);
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        game.chooseParticipants();
+        gameStage = "trimHand";
+        return "Press the continue button twice....\n";
+    }
+
+    @PostMapping("/trimHand")
+    public void trimHand() {
+        System.setOut(printStream);
+        System.setIn(pipedInputStream);
+        gameStage = "getInput";
+        game.trimHand();
+
+
+        if (Game.QuestLine.getCurrentQuest() != null) {
+            attackSetup();
+        } else {
+            gameStage = "drawCard";
+            game.nextTurn();
+            System.out.println("It is " + game.getCurrentPlayer().getName() + "'s turn");
+            System.out.println("Press continue button...");
+        }
+    }
+
+    public void attackSetup() {
+        System.setIn(pipedInputStream);
+        gameStage = "getInput";
+        game.setUpAttacks();
+
+        System.out.println("Press continue button...");
+
+        gameStage = "resolveAttack";
+    }
+
+    @PostMapping("/resolveAttack")
+    public void resolveAttack() {
+        System.setOut(printStream);
+
+        game.resolveAttacks();
+
+        if (Game.QuestLine.getCurrentQuest() == null) {
+            System.out.println("Press continue button...");
+
+            for (Player p : game.getPlayers()) {
+                if (p.getCards().size() > 12) {
+                    gameStage = "trimHand";
+                    return;
+                }
+            }
+            gameStage = "drawCard";
+            return;
+        } else {
+            gameStage = "findParticipants";
+            System.out.println(participantPrompt());
+        }
+    }
+
     @PostMapping("/getSponsorInput")
     public String getSponsorInput(@RequestBody String answer) {
         if (Integer.parseInt(answer) == 2 || answer.toUpperCase().equals("NO")) {
@@ -132,6 +304,7 @@ public class GameController {
             sponsorIndex++;
             return findSponsor();
         }
+        sponsorAsked.set(sponsorIndex, false);
 
         String input = "";
         for (int i = game.getPlayers().indexOf(game.getCurrentPlayer()); i < 4; i++) {
@@ -143,7 +316,7 @@ public class GameController {
             }
 
 
-            if (sponsorAsked.get(game.getPlayers().indexOf(game.getCurrentPlayer()))) {
+            if (sponsorAsked.get(i)) {
                 input += "2\n";
             } else if (i == sponsorIndex) {
                 input += "1\n";
@@ -162,8 +335,8 @@ public class GameController {
         for (int i = 0; i < 4; i++) {
             sponsorAsked.set(i, false);
         }
-        gameStage = "questBuild1";
-        return "";
+        gameStage = "questBuild";
+        return questBuildPrompt();
     }
 
     @GetMapping("/getGameStage")
@@ -200,4 +373,38 @@ public class GameController {
         System.setIn(previousIn);
         return byteArrayOutputStream.toString();
     }
+
+    @GetMapping("/getOutput")
+    public String getOutput() {
+        return tempOutput.toString();
+    }
+
+    @GetMapping("/getModel")
+    public Game getModel() {
+        return game;
+    }
+
+    @PostMapping("/setInput")
+    public void setInput(@RequestBody String answer) throws IOException {
+        String answerNewline = answer + "\n";
+        pipedOutputStream.write(answerNewline.getBytes());
+        pipedOutputStream.flush();
+    }
+
+    @PostMapping("/reset")
+    public void reset() {
+        game = null;
+        sponsorIndex = -1;
+        participateIndex = 0;
+        stageBuildNum = 1;
+
+        for (int i = 0; i < 4; i++) {
+            sponsorAsked.set(i, false);
+            participating.set(i, false);
+        }
+
+        gameStage = "drawCard";
+        tempOutput.reset();
+    }
+
 }
