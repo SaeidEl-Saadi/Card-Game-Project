@@ -16,7 +16,7 @@ import java.util.List;
 public class RunSeleniumTests {
 
     private WebDriver driver;
-    private int waitTime = 500;
+    private int waitTime = 1000;
     private int previous = waitTime;
 
     @BeforeEach
