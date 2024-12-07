@@ -58,6 +58,44 @@ async function second_Scenario() {
     }
 }
 
+async function third_Scenario() {
+    try {
+        const consoleBox = document.getElementsByClassName("console")[0];
+        const buttons = document.getElementsByClassName("startButtons");
+        document.getElementById("resetButton").disabled = false;
+        for (let button of buttons) {
+            button.disabled = true;
+        }
+        let preOutput = await fetch("http://localhost:8080/third_Scenario", {method: "GET"});
+        let output = await preOutput.text();
+
+        consoleBox.value += "\n> " + output;
+        consoleBox.scrollTop = consoleBox.scrollHeight;
+        updateTable()
+    } catch (error) {
+        console.error("Error in startGame: ", error);
+    }
+}
+
+async function fourth_Scenario() {
+    try {
+        const consoleBox = document.getElementsByClassName("console")[0];
+        const buttons = document.getElementsByClassName("startButtons");
+        document.getElementById("resetButton").disabled = false;
+        for (let button of buttons) {
+            button.disabled = true;
+        }
+        let preOutput = await fetch("http://localhost:8080/fourth_Scenario", {method: "GET"});
+        let output = await preOutput.text();
+
+        consoleBox.value += "\n> " + output;
+        consoleBox.scrollTop = consoleBox.scrollHeight;
+        updateTable()
+    } catch (error) {
+        console.error("Error in startGame: ", error);
+    }
+}
+
 async function continueButton() {
     try {
         let gameStage = await fetch("http://localhost:8080/getGameStage", {method: "GET"});

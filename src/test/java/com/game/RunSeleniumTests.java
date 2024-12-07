@@ -435,6 +435,418 @@ public class RunSeleniumTests {
 
         Assertions.assertEquals("9", driver.findElement(By.id("p4Cards")).getText());
         Assertions.assertEquals("F15, F15, F20, F25, F30, F50, F70, L20, L20, ", driver.findElement(By.id("p4")).getAttribute("value"));
+
+        driver.findElement(By.id("resetButton")).click();
+    }
+
+    @Test
+    public void third_Scenario() throws InterruptedException {
+        // Open local app
+        driver.get("http://127.0.0.1:8081");
+        Thread.sleep(500);
+        driver.findElement(By.id("third_Scenario")).click();
+        Thread.sleep(waitTime);
+
+        WebElement inputBox = driver.findElement(By.className("inputBox"));
+        WebElement continueButton = driver.findElement(By.id("continue"));
+
+        continueButton.click();
+        delay();
+        continueButton.click();
+        delay();
+
+        inputBox.sendKeys("1"); //P1 sponsor
+        delay();
+        continueButton.click();
+        delay();
+
+        //P1 stages F5 for stage 1
+        stageCards("F5", "p1");
+        //P1 stages F10 for stage 2
+        stageCards("F10", "p1");
+        //P1 stages F15 for stage 3
+        stageCards("F15", "p1");
+        //P1 stages F20 for stage 4
+        stageCards("F20", "p1");
+
+        //stage 1
+        inputBox.sendKeys("1"); //P2 participates
+        delay();
+        continueButton.click();
+        inputBox.sendKeys("1"); //P3 participates
+        delay();
+        continueButton.click();
+        inputBox.sendKeys("1"); //P4 participates
+        delay();
+        continueButton.click();
+
+        waitTime = 300;
+        continueButton.click();
+        delay();
+        continueButton.click();
+        waitTime = previous;
+
+        trimHand("F5", "p2");
+        trimHand("F10", "p3");
+        trimHand("F20", "p4");
+
+        //P2 attacks with H10
+        stageCards("S10", "p2");
+        //P3 attacks with nothing
+        stageCards("S10", "p3");
+        //P4 attacks with H10
+        stageCards("S10", "p4");
+
+        Assertions.assertEquals("11", driver.findElement(By.id("p2Cards")).getText());
+        Assertions.assertEquals("11", driver.findElement(By.id("p3Cards")).getText());
+        Assertions.assertEquals("11", driver.findElement(By.id("p4Cards")).getText());
+
+        //stage 2
+        continueButton.click();
+        delay();
+        inputBox.sendKeys("1"); //P2 participates
+        delay();
+        continueButton.click();
+        inputBox.sendKeys("1"); //P3 participates
+        delay();
+        continueButton.click();
+        inputBox.sendKeys("1"); //P4 participates
+        delay();
+        continueButton.click();
+
+        waitTime = 300;
+        continueButton.click();
+        delay();
+        continueButton.click();
+        waitTime = previous;
+
+        //P2 attacks with H10
+        stageCards("H10", "p2");
+        //P3 attacks with nothing
+        stageCards("H10", "p3");
+        //P4 attacks with H10
+        stageCards("H10", "p4");
+
+        Assertions.assertEquals("11", driver.findElement(By.id("p2Cards")).getText());
+        Assertions.assertEquals("11", driver.findElement(By.id("p3Cards")).getText());
+        Assertions.assertEquals("11", driver.findElement(By.id("p4Cards")).getText());
+
+        //stage 3
+        continueButton.click();
+        delay();
+        inputBox.sendKeys("1"); //P2 participates
+        delay();
+        continueButton.click();
+        inputBox.sendKeys("1"); //P3 participates
+        delay();
+        continueButton.click();
+        inputBox.sendKeys("1"); //P4 participates
+        delay();
+        continueButton.click();
+
+        waitTime = 300;
+        continueButton.click();
+        delay();
+        continueButton.click();
+        waitTime = previous;
+
+        //P2 attacks with H10
+        stageCards("B15", "p2");
+        //P3 attacks with nothing
+        stageCards("B15", "p3");
+        //P4 attacks with H10
+        stageCards("B15", "p4");
+
+        Assertions.assertEquals("11", driver.findElement(By.id("p2Cards")).getText());
+        Assertions.assertEquals("11", driver.findElement(By.id("p3Cards")).getText());
+        Assertions.assertEquals("11", driver.findElement(By.id("p4Cards")).getText());
+
+        //stage 4
+        continueButton.click();
+        delay();
+        inputBox.sendKeys("1"); //P2 participates
+        delay();
+        continueButton.click();
+        inputBox.sendKeys("1"); //P3 participates
+        delay();
+        continueButton.click();
+        inputBox.sendKeys("1"); //P4 participates
+        delay();
+        continueButton.click();
+
+        waitTime = 300;
+        continueButton.click();
+        delay();
+        continueButton.click();
+        waitTime = previous;
+
+        //P2 attacks with H10
+        stageCards("L20", "p2");
+        //P3 attacks with nothing
+        stageCards("L20", "p3");
+        //P4 attacks with H10
+        stageCards("L20", "p4");
+        continueButton.click();
+
+        Assertions.assertEquals("11", driver.findElement(By.id("p2Cards")).getText());
+        Assertions.assertEquals("11", driver.findElement(By.id("p3Cards")).getText());
+        Assertions.assertEquals("11", driver.findElement(By.id("p4Cards")).getText());
+
+        waitTime = 300;
+        continueButton.click();
+        delay();
+        continueButton.click();
+        delay();
+        waitTime = previous;
+
+        trimHand("F5,F5,F10,F10", "p1");
+
+        //P2 TURN
+        continueButton.click();
+        delay();
+        continueButton.click();
+        delay();
+
+        //P3 TURN
+        continueButton.click();
+        delay();
+        continueButton.click();
+        delay();
+
+        waitTime = 300;
+        continueButton.click();
+        delay();
+        waitTime = previous;
+
+        trimHand("F5,F10", "p1");
+        trimHand("F5", "p2");
+        trimHand("F5", "p3");
+        trimHand("F20", "p4");
+
+        //P4 TURN
+        continueButton.click();
+        delay();
+        continueButton.click();
+        delay();
+
+        waitTime = 300;
+        continueButton.click();
+        delay();
+        waitTime = previous;
+
+        trimHand("F25,F30", "p4");
+
+        //P1 TURN
+        continueButton.click();
+        delay();
+        continueButton.click();
+        delay();
+
+        inputBox.sendKeys("1"); //P1 sponsor
+        delay();
+        continueButton.click();
+        delay();
+
+        //P1 stages F5 for stage 1
+        stageCards("F15", "p1");
+        //P1 stages F10 for stage 2
+        stageCards("F15,D5", "p1");
+        //P1 stages F15 for stage 3
+        stageCards("F20,D5", "p1");
+
+        //stage 1
+        inputBox.sendKeys("1"); //P2 participates
+        delay();
+        continueButton.click();
+        inputBox.sendKeys("1"); //P3 participates
+        delay();
+        continueButton.click();
+        inputBox.sendKeys("1"); //P4 participates
+        delay();
+        continueButton.click();
+
+        waitTime = 300;
+        continueButton.click();
+        delay();
+        continueButton.click();
+        waitTime = previous;
+
+        trimHand("F5", "p2");
+        trimHand("F10", "p3");
+        trimHand("F20", "p4");
+
+        //P2 attacks with 15
+        stageCards("B15", "p2");
+        //P3 attacks with 15
+        stageCards("B15", "p3");
+        //P4 attacks with H10
+        stageCards("H10", "p4");
+
+        Assertions.assertEquals("11", driver.findElement(By.id("p4Cards")).getText());
+
+        //stage 2
+        continueButton.click();
+        inputBox.sendKeys("1"); //P2 participates
+        delay();
+        continueButton.click();
+        inputBox.sendKeys("1"); //P3 participates
+        delay();
+        continueButton.click();
+
+        waitTime = 300;
+        continueButton.click();
+        delay();
+        continueButton.click();
+        waitTime = previous;
+
+        //P2 attacks with 15
+        stageCards("B15,H10", "p2");
+        //P3 attacks with 15
+        stageCards("B15,S10", "p3");
+
+        Assertions.assertEquals("10", driver.findElement(By.id("p2Cards")).getText());
+        Assertions.assertEquals("10", driver.findElement(By.id("p3Cards")).getText());
+
+        //stage 3
+        continueButton.click();
+        inputBox.sendKeys("1"); //P2 participates
+        delay();
+        continueButton.click();
+        inputBox.sendKeys("1"); //P3 participates
+        delay();
+        continueButton.click();
+
+        waitTime = 300;
+        continueButton.click();
+        delay();
+        continueButton.click();
+        waitTime = previous;
+
+        //P2 attacks with 15
+        stageCards("L20,S10", "p2");
+        //P3 attacks with 15
+        stageCards("E30", "p3");
+        continueButton.click();
+
+        Assertions.assertEquals("15", driver.findElement(By.id("p1Cards")).getText());
+        Assertions.assertEquals("9", driver.findElement(By.id("p2Cards")).getText());
+        Assertions.assertEquals("10", driver.findElement(By.id("p3Cards")).getText());
+
+        waitTime = 300;
+        continueButton.click();
+        delay();
+        continueButton.click();
+        delay();
+        waitTime = previous;
+
+        trimHand("F15,F15,F15", "p1");
+        delay();
+        continueButton.click();
+        delay();
+
+        //P3 is a winner
+        Assertions.assertEquals("7", driver.findElement(By.id("p3Shields")).getText());
+
+        //hand assertions
+        Assertions.assertEquals("12", driver.findElement(By.id("p1Cards")).getText());
+        Assertions.assertEquals("F25, F25, F35, D5, D5, S10, S10, S10, S10, H10, H10, H10, ", driver.findElement(By.id("p1")).getAttribute("value"));
+
+        Assertions.assertEquals("9", driver.findElement(By.id("p2Cards")).getText());
+        Assertions.assertEquals("F15, F25, F30, F40, S10, S10, S10, H10, E30, ", driver.findElement(By.id("p2")).getAttribute("value"));
+
+        Assertions.assertEquals("10", driver.findElement(By.id("p3Cards")).getText());
+        Assertions.assertEquals("F10, F25, F30, F40, F50, S10, S10, H10, H10, L20, ", driver.findElement(By.id("p3")).getAttribute("value"));
+
+        Assertions.assertEquals("11", driver.findElement(By.id("p4Cards")).getText());
+        Assertions.assertEquals("F25, F25, F30, F50, F70, D5, D5, S10, S10, B15, L20, ", driver.findElement(By.id("p4")).getAttribute("value"));
+
+        delay();
+        driver.findElement(By.id("resetButton")).click();
+    }
+
+    @Test
+    public void fourth_Scenario() throws InterruptedException {
+        // Open local app
+        driver.get("http://127.0.0.1:8081");
+        Thread.sleep(500);
+        driver.findElement(By.id("fourth_Scenario")).click();
+        Thread.sleep(waitTime);
+
+        WebElement inputBox = driver.findElement(By.className("inputBox"));
+        WebElement continueButton = driver.findElement(By.id("continue"));
+
+        continueButton.click();
+        delay();
+        continueButton.click();
+        delay();
+
+        inputBox.sendKeys("1"); //P1 sponsor
+        delay();
+        continueButton.click();
+        delay();
+
+        //P1 stages F5 for stage 1
+        stageCards("F50,D5,S10,H10,B15,L20", "p1");
+        //P1 stages F10 for stage 2
+        stageCards("F70,D5,S10,H10,B15,L20", "p1");
+
+        //stage 1
+        inputBox.sendKeys("1"); //P2 participates
+        delay();
+        continueButton.click();
+        inputBox.sendKeys("1"); //P3 participates
+        delay();
+        continueButton.click();
+        inputBox.sendKeys("1"); //P4 participates
+        delay();
+        continueButton.click();
+
+        waitTime = 300;
+        continueButton.click();
+        delay();
+        continueButton.click();
+        waitTime = previous;
+
+        trimHand("F5", "p2");
+        trimHand("F15", "p3");
+        trimHand("F10", "p4");
+
+        //P2 attacks with H10
+        stageCards("E30", "p2");
+        //P3 attacks with nothing
+        inputBox.sendKeys("quit");
+        delay();
+        continueButton.click();
+        //P4 attacks with nothing
+        inputBox.sendKeys("quit");
+        delay();
+        continueButton.click();
+        delay();
+        continueButton.click();
+
+        waitTime = 300;
+        continueButton.click();
+        delay();
+        continueButton.click();
+        waitTime = previous;
+
+        trimHand("F5,F10", "p1");
+        delay();
+
+        //hand assertions
+        Assertions.assertEquals("12", driver.findElement(By.id("p1Cards")).getText());
+        Assertions.assertEquals("F15, D5, D5, D5, D5, S10, S10, S10, H10, H10, H10, H10, ", driver.findElement(By.id("p1")).getAttribute("value"));
+
+        Assertions.assertEquals("11", driver.findElement(By.id("p2Cards")).getText());
+        Assertions.assertEquals("F5, F5, F10, F15, F15, F20, F20, F25, F30, F30, F40, ", driver.findElement(By.id("p2")).getAttribute("value"));
+
+        Assertions.assertEquals("12", driver.findElement(By.id("p3Cards")).getText());
+        Assertions.assertEquals("F5, F5, F10, F15, F15, F20, F20, F25, F25, F30, F40, L20, ", driver.findElement(By.id("p3")).getAttribute("value"));
+
+        Assertions.assertEquals("12", driver.findElement(By.id("p4Cards")).getText());
+        Assertions.assertEquals("F5, F5, F10, F15, F15, F20, F20, F25, F25, F30, F50, E30, ", driver.findElement(By.id("p4")).getAttribute("value"));
+
+        driver.findElement(By.id("resetButton")).click();
     }
 
     private int getCard(String card, String hand) {

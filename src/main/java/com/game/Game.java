@@ -200,7 +200,7 @@ public class Game {
 
         if (c.getCard().equals("Plague")) {
             currentPlayer.removeShields();
-        } else if (c.getCard().equals("Queen’s favor")) {
+        } else if (c.getCard().equals("Queen’s favor") || c.getCard().equals("Queen's favor")) {
             drawAdventureCards(currentPlayer, 2);
         } else if (c.getCard().equals("Prosperity")) {
             for (int i = 0; i < 4; i++) {
