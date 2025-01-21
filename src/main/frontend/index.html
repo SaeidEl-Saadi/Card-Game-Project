@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Game of Quests</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <header id="mainHeader">Game of Quests</header>
+        <div class="layout">
+            <div class="buttons">
+                <button id="start" class="startButtons" onclick="startGame()">Start General Game</button>
+                <button id="startA1" class="startButtons" onclick="A1Start()">Start</br>A1_scenario</button>
+                <button id="second_Scenario" onclick="second_Scenario()" class="startButtons">Start 2winner_game_2winner_quest</button>
+                <button id="third_Scenario" onclick="third_Scenario()" class="startButtons">Start 1winner_game_with_events</button>
+                <button id="fourth_Scenario" onclick="fourth_Scenario()" class="startButtons">Start</br>0_winner_quest</button>
+            </div>
+            <table class="infoTable">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Shields</th>
+                        <th>Number of Cards</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="P1">
+                        <th>P1</th>
+                        <td id="p1Shields"></td>
+                        <td id="p1Cards"></td>
+                    </tr>
+                    <tr class="P2">
+                        <th>P2</th>
+                        <td id="p2Shields"></td>
+                        <td id="p2Cards"></td>
+                    </tr>
+                    <tr class="P3">
+                        <th>P3</th>
+                        <td id="p3Shields"></td>
+                        <td id="p3Cards"></td>
+                    </tr>
+                    <tr class="P4">
+                        <th>P4</th>
+                        <td id="p4Shields"></td>
+                        <td id="p4Cards"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <textarea class="console" readonly></textarea>
+        </div>
+        <input class="inputBox" type="text"></input>
+        </br>
+        <div class="actionButtons">
+            <button id="continue" onclick="continueButton()">Continue/Enter</button>
+            </br>
+            <button onclick="resetButton()" id="resetButton" disabled>Reset Game</button>
+        </div>
+        <div class="text-area-container">
+            <div class="text-area-box">
+                <label for="p1">P1</label>
+                <textarea id="p1" name="p1" readonly></textarea>
+            </div>
+            <div class="text-area-box">
+                <label for="p2">P2</label>
+                <textarea id="p2" name="p2" readonly></textarea>
+            </div>
+            <div class="text-area-box">
+                <label for="p3">P3</label>
+                <textarea id="p3" name="p3" readonly></textarea>
+            </div>
+            <div class="text-area-box">
+                <label for="p4">P4</label>
+                <textarea id="p4" name="p4" readonly></textarea>
+            </div>
+        </div>
+        <script src="script.js"></script>
+    </body>
+</html>
